@@ -2,6 +2,8 @@ from sklearn.base import TransformerMixin, BaseEstimator
 from vincentvanbot.preprocessing.utils import resize_image
 import cv2
 
+from tqdm import tqdm
+tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
 
 class ImageResizer(TransformerMixin, BaseEstimator):
     """Receives entire dataset, with also IMAGE column, containing vector representation
@@ -16,5 +18,6 @@ class ImageResizer(TransformerMixin, BaseEstimator):
     def transform(self, X, y=None):
         """X is a pd.DataFrame with IMAGE column having vector representation of the image"""
         X_transformed = X.copy()
-        X_transformed['IMAGE'] = X['IMAGE'].map(resize_image)
+        print("\nResizing images...")
+        X_transformed['IMAGE'] = X['IMAGE'].progress_map(resize_image)
         return X_transformed
