@@ -4,6 +4,8 @@ import cv2
 
 
 class ImageResizer(TransformerMixin, BaseEstimator):
+    """Receives entire dataset, with also IMAGE column, containing vector representation
+    of the image from the URL. Returns the entire df, with IMAGE vector resized accoring to dim"""
     def __init__(self, dim=(420,360), interpolation=cv2.INTER_AREA):
         self.dim = dim
         self.interpolation = interpolation
