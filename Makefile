@@ -20,7 +20,7 @@ ftest:
 clean:
 	@rm -f */version.txt
 	@rm -f .coverage
-	@rm -fr */__pycache__ */*.pyc __pycache__
+	@rm -fr */__pycache__ */*.pyc __pycache__ */*/__pycache__
 	@rm -fr build dist
 	@rm -fr vincentvanbot-*.dist-info
 	@rm -fr vincentvanbot.egg-info

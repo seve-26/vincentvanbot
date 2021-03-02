@@ -31,7 +31,7 @@ def download_images_locally(df):
 
 if __name__ == '__main__':
     df = get_data_locally(nrows=10)
-    # download_images_locally(df)
-    pipe = build_pipe(dim=(420,360))
-    df_transformed = pipe.fit_transform(df)
-    print(df_transformed.iloc[0]['IMAGE'].shape)    
+    download_images_locally(df)
+    # pipe = build_pipe(dim=(420,360))
+    # df_transformed = pipe.fit_transform(df)
+    # print(df_transformed.iloc[0]['IMAGE'].shape)    
