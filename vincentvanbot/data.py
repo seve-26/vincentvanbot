@@ -13,11 +13,15 @@ def get_data_locally(nrows=10):
     # transform html link to jpg
     df['URL'] = df['URL'].map(get_jpg_link)
 
+    # keep only paintings
+    df = df[df['FORM'] == 'painting']
+
     return df
 
 if __name__ == '__main__':
-    df = get_data_locally()
-    pipe = build_pipe(dim=(420,360))
-    df_transformed = pipe.fit_transform(df)
-    print(df_transformed.iloc[0]['IMAGE'].shape)
+    df = get_data_locally(nrows=1000)
+    # pipe = build_pipe(dim=(420,360))
+    # df_transformed = pipe.fit_transform(df)
+    # print(df_transformed.iloc[0]['IMAGE'].shape)
+    print(df['FORM'].unique())
     
