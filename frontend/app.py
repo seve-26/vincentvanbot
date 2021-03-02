@@ -1,5 +1,36 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import requests
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+#from PIL import Image
+#import copy
 
-st.markdown("## Here will be Vincent Van Bot")
-components.iframe('https://assets.pinterest.com/ext/embed.html?id=524317581589830707', width=345, height=548)
+env_path = join(dirname(__file__),'.env')
+load_dotenv(dotenv_path=env_path)
+
+api_url = os.getenv('API_URL')
+
+st.markdown("#### Found something beautiful? Take a picture of it, upload it here, and enjoy the magic of art")
+img = st.file_uploader('Please upload an image', type=['png', 'jpg', 'heic'])
+#img_copy = copy.deepcopy(img)
+
+if img:
+    #img_resized = Image.open(img_copy).resize((300, 300))
+    st.markdown("#### You have uploaded this picture:")
+    st.image(img)
+    
+    files = {"file": (img.name, img, img.type)}
+    response = requests.post(api_url, files=files).json()
+    
+    st.markdown("#### So you will probably like these ones!")
+    for url in response:
+        st.image(url)
+    
+    
+    
+
+    
+
+    
