@@ -1,9 +1,10 @@
 import os
 import pandas as pd
 from vincentvanbot.preprocessing.utils import get_jpg_link
-from vincentvanbot.preprocessing.pipeline import build_pipe
-from vincentvanbot.params import IMAGES_PATH
+from vincentvanbot.preprocessing.image import create_pickle_db, pickle_upload
+from vincentvanbot.params import IMAGES_PATH, PICKLE_PATH, BUCKET_NAME, BUCKET_PICKLE_PATH
 from vincentvanbot.utils import download_single_image
+from google.cloud import storage
 
 from tqdm import tqdm
 tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
@@ -23,15 +24,28 @@ def get_data_locally(nrows=10):
     return df
 
 def download_images_locally(df):
-    """Saves jpg files under raw_data/images based on aintings in df"""
+    """Saves jpg files under raw_data/images based on paintings in df"""
     if not os.path.exists(IMAGES_PATH):
         os.mkdir(IMAGES_PATH)
+    print(f'\nDownloading images to {IMAGES_PATH}...')
     df = df.progress_apply(download_single_image,axis=1)
+
+def get_pickle(source='gcp'):
+    """Gets pickle file from source and returns images df"""
+    client = storage.Client()
+    if source == 'local':
+        path = PICKLE_PATH
+    elif source == 'gcp':
+        path = f"gs://{BUCKET_NAME}/{BUCKET_PICKLE_PATH}"
+    img_df = pd.read_pickle(path)
+
+    return img_df
 
 
 if __name__ == '__main__':
-    df = get_data_locally(nrows=10)
+    df = get_data_locally(nrows=100_000)
     download_images_locally(df)
-    # pipe = build_pipe(dim=(420,360))
-    # df_transformed = pipe.fit_transform(df)
-    # print(df_transformed.iloc[0]['IMAGE'].shape)    
+    create_pickle_db(path=IMAGES_PATH, dim=(36,42))
+    pickle_upload(rm=True)
+    # img_df = get_pickle(source='gcp')
+    # print(img_df.shape)
