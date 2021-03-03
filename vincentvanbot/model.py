@@ -2,13 +2,14 @@ import numpy as np
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
-#import model
+from sklearn.neighbors import NearestNeighbors
 
 
 #open feature vectors with pickle file
 
 # take random subsample of images of size num_images
 # num_images = 100
+
 
 
 def flatten_images():
@@ -18,6 +19,14 @@ def flatten_images():
     X_flattened = pd.DataFrame(np.vstack(flatten_images()))
 
     return X_flattened
+
+
+def train_KNN_model(X_flattened, n_neighbors):
+    model = NearestNeighbors(n_neighbors=5)
+    knn_model = model.fit(X_flattened)
+    NearestNeighbors(n_neighbors=5)
+
+    return knn_model
 
 
 def get_distance(model, X_flattened):
