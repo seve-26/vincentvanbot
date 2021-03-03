@@ -1,0 +1,30 @@
+def detect_labels_uri(uri, n):
+    """Detects labels in the file located in Google Cloud Storage or on the
+    Web."""
+    from google.cloud import vision
+    client = vision.ImageAnnotatorClient()
+    image = vision.Image()
+    image.source.image_uri = uri
+
+    response = client.label_detection(image=image, max_results=n)
+    labels = response.label_annotations
+    custom_list = ['Sky','Building','Tree','Human','Sun','Moon','Ship','Horse','Textile','Metall','Mythology','Plant','Flower','Lanscape']
+    new_list = []
+    new_list2 = []
+    new_list3 = []
+    
+    for label in labels:
+        new_list.append(label.description)
+        new_list2.append(label.score)
+    
+    for element in custom_list:
+        if element in new_list and new_list2[new_list.index(element)] >0.7:
+            new_list3.append(element)          
+    print(new_list)
+    print(new_list2)
+    print(new_list3)
+    if response.error.message:
+        raise Exception(
+            '{}\nFor more info on error messages, check: '
+            'https://cloud.google.com/apis/design/errors'.format(
+                response.error.message))
