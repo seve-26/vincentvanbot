@@ -5,3 +5,5 @@ twine
 wheel>=0.29
 
 streamlit
+python-dotenv
+requests
