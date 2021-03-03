@@ -1,65 +1,43 @@
-import os
-import random
 import numpy as np
+import pandas as pd
 import pickle
-import matplotlib.pyplot
-from matplotlib.pyplot import imshow
-
-from sklearn.neighbors import NearestNeighbors
-from keras.applications.imagenet_utils import decode_predictions, preprocess_input
+import matplotlib.pyplot as plt
+#import model
 
 
-#open saved feature vectors with pickle file (Seve)
+#open feature vectors with pickle file
 
-
-# take random subsample of image set of size num_images
+# take random subsample of images of size num_images
 # num_images = 100
 
-#load image
 
-def load_image(html_link):
-    jpg_link = get_jpg_link(html_link)
-    img = jpg_to_array(jpg_link)
-    #x = np.expand_dims(x, axis=0)
-    X = resize_image(img,width=420,height=360)
-
-    return img, X
-
-#plot image
-
-def show_image():
-    img, X = load_image(html_link)
-    print("shape of x: ", x.shape)
-    print("data type: ", x.dtype)
-
-    plt.imshow(img)
-
-
-# Flatten so we have ndarrays of shape (453600,)
 def flatten_images():
-    # Read scaled images as numpy arrays
-    images = df_transformed['IMAGE'].iloc[:,]
+    """Returns dataframe with a column of flattened image vectors of shape (453600,)"""
+    images = df_transformed['IMAGE'].iloc[:,] # Read scaled images as numpy arrays
     flat_images = [image.flatten() for image in images]
+    X_flattened = pd.DataFrame(np.vstack(flatten_images()))
 
-    return flat_images
-
-
-# fit the KNN model
-
-model = NearestNeighbors(n_neighbors=k_neighbors)
-model.fit(flat_images)
-NearestNeighbors(n_neighbors=k_neighbors)
-
-k_neighbors = 3
-
-# Passing new image
-
-# Return the distances and index of the k_neighbors closest points
-model.kneighbors(flat_images,n_neighbors=3)
-
-# convert flattened image back to shape and show image
+    return X_flattened
 
 
+def get_distance(model, X_flattened):
+    """Return the distances of the k_neighbors closest points"""
+    distance_lst = list(model.kneighbors(X_flattened,n_neighbors=5)[0][0])
+    distance_df = pd.DataFrame(distance_lst, columns=['distance'])
 
-#define a function that show nearest images
+    return distance_df
 
+
+def get_indexes(model, X_flattened):
+    """Return the index of the k_neighbors closest point"""
+    index_list = list(model.kneighbors(X_flattened,n_neighbors=5)[1][0])
+    index_df = pd.DataFrame(index_list, columns=['index'])
+
+    return index_df
+
+
+# function which gets df with details of closest images (author, titel, date etc)
+def img_details():
+    # df_transformed.iloc[ind_df.iloc[1]].drop(columns=["URL", "IMAGE"])
+    # convert to list or dict
+    pass
