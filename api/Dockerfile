@@ -3,6 +3,6 @@ COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 COPY . ./
 
-ENV GOOGLE_APPLICATION_CREDENTIALS=nikki-bctp-d9ee839f22f5.json
+ENV GOOGLE_APPLICATION_CREDENTIALS='Vincent Van Bot-67b2b35a7d0c.json'
 
 CMD uvicorn api:app --host 0.0.0.0 --port $PORT
