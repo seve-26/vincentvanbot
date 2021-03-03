@@ -13,7 +13,7 @@ load_dotenv(dotenv_path=env_path)
 api_url = os.getenv('API_URL')
 
 st.markdown("#### Found something beautiful? Take a picture of it, upload it here, and enjoy the magic of art")
-img = st.file_uploader('Please upload an image', type=['png', 'jpg', 'heic'])
+img = st.file_uploader('Please upload an image', type=['png', 'jpg', 'jpeg', 'heic'])
 #img_copy = copy.deepcopy(img)
 
 if img:
