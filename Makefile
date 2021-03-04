@@ -20,7 +20,7 @@ ftest:
 clean:
 	@rm -f */version.txt
 	@rm -f .coverage
-	@rm -fr */__pycache__ */*.pyc __pycache__
+	@rm -fr */__pycache__ */*.pyc __pycache__ */*/__pycache__
 	@rm -fr build dist
 	@rm -fr vincentvanbot-*.dist-info
 	@rm -fr vincentvanbot.egg-info
@@ -59,3 +59,34 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+
+# ----------------------------------
+#            GOOGLE CLOUD
+# ----------------------------------
+# initial setup
+PROJECT_ID=vincent-van-bot
+
+BUCKET_NAME=vincent-van-bot-bucket
+
+REGION=europe-west1
+
+set_project:
+	@gcloud config set project ${PROJECT_ID}
+
+create_bucket:
+	@gsutil mb -l ${REGION} -p ${PROJECT_ID} gs://${BUCKET_NAME}
+
+
+# upload data
+LOCAL_PATH_IMAGES="raw_data/images"
+LOCAL_PATH_PICKLE="raw_data/flat_resized_images.pkl"
+BUCKET_FOLDER=data
+BUCKET_FILE_NAME_IMAGES=$(shell basename ${LOCAL_PATH_IMAGES})
+BUCKET_FILE_NAME_PICKLE=$(shell basename ${LOCAL_PATH_PICKLE})
+
+upload_images:
+	@gsutil -m cp -r ${LOCAL_PATH_IMAGES} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME_IMAGES}
+
+upload_pickle:
+	@gsutil cp ${LOCAL_PATH_PICKLE} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME_PICKLE}
