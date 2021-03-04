@@ -4,10 +4,6 @@ import pickle
 import matplotlib.pyplot as plt
 from sklearn.neighbors import NearestNeighbors
 
-from vincentvanbot.data import get_data_locally
-from vincentvanbot.preprocessing.pipeline import build_pipe
-
-
 
 def flatten_images(df_transformed):
     """Returns dataframe with a column of flattened image vectors of shape (453600,)"""
@@ -18,16 +14,9 @@ def flatten_images(df_transformed):
     return X_flattened
 
 
-def train_KNN_model(X_flattened, n_neighbors):
-    model = NearestNeighbors(n_neighbors=n_neighbors)
-    knn_model = model.fit(X_flattened)
-    NearestNeighbors(n_neighbors=n_neighbors)
-
-    return knn_model
-
-
-def return_closest_images(df_transformed, knn_model, X_test):
+def return_closest_images(df_transformed, X_test):
     """Filters original dataframe with indices and returns reduced dataframe"""
+    knn_model = NearestNeighbors(n_neighbors=5).fit(X_flattened)
     ind_list = list(knn_model.kneighbors(X_test,n_neighbors=5)[1][0])[1:] # get n closest points, unpack indices to a list
     df_closest_images = df.iloc[ind_list, :] # filter original df with indices
 
