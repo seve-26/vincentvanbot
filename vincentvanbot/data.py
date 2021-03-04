@@ -59,7 +59,7 @@ def get_joblib_data(size=100, source='gcp', rm=True):
 
 
 if __name__ == '__main__':
-    nrows=100000
+    nrows=10000
     # df = get_data_locally(nrows=nrows)
     # download_images_locally(df)
     create_joblib_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
