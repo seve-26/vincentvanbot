@@ -50,10 +50,10 @@ def get_pickle(size=100, source='gcp'):
 
 
 if __name__ == '__main__':
-    nrows=10
+    nrows=100_000
     # df = get_data_locally(nrows=nrows)
     # download_images_locally(df)
-    create_pickle_db(size=nrows, path=IMAGES_PATH, dim=(1040,1000))
-    # pickle_upload(size=nrows, rm=True)
+    create_pickle_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
+    pickle_upload(size=nrows, rm=True)
     # img_df = get_pickle(size=nrows, source='gcp')
     # print(img_df.shape)

@@ -6,3 +6,4 @@ PICKLE_PATH_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','
 # gcloud
 BUCKET_NAME='vincent-van-bot-bucket'
 BUCKET_PICKLE_FOLDER='data'
+BUCKET_INITIAL_DATASET_FOLDER = 'data'
