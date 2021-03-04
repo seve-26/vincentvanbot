@@ -46,22 +46,30 @@ def process_image(message):
         # Sends the downloaded picture to our API server
         files = {"file": (pic.file_path.split('/')[1], downloaded.content, 'image/jpeg')}
         api_response = requests.post(api_url, files=files).json()
-    
-        # Processes a response received from our API server        
-        for url in api_response:
-            pic_received = requests.get(url).content
         
-            # If picture is larger then 10 Mb, resize it before sending
-            while (len(pic_received) > 10000000):
-                img = Image.open(io.BytesIO(pic_received))
-                img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.ANTIALIAS)
+        if api_response:
+            # Processes a response received from our API server    
+            # API stricture: {img_url, html_url, author, title, created, museum}  
+            for response_item in api_response:
+                pic_received = requests.get(response_item['img_url']).content
+        
+                # If picture is larger then 10 Mb, resize it before sending
+                while (len(pic_received) > 10000000):
+                    img = Image.open(io.BytesIO(pic_received))
+                    img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.ANTIALIAS)
             
-                byteIO = io.BytesIO()
-                img.save(byteIO, format='PNG')
-                pic_received = byteIO.getvalue()
-        
-            bot.send_photo(message.chat.id, pic_received)
-            bot.send_message(message.chat.id, "URL: " + url, disable_web_page_preview=True)
+                    byteIO = io.BytesIO()
+                    img.save(byteIO, format='PNG')
+                    pic_received = byteIO.getvalue()
+                    
+                # Sends painting and description to the chat
+                bot.send_photo(message.chat.id, pic_received)
+                reply = f"<i>Title:</i> {response_item['title']}\n<i>Author:</i> {response_item['author']}\n" + \
+                        f"<i>Created:</i> {response_item['created']}\n<i>Museum:</i> {response_item['museum']}\n\n" + \
+                        f"Link: {response_item['html_url']}"
+                bot.send_message(message.chat.id, reply, disable_web_page_preview=True, parse_mode='HTML')
+        else:
+            bot.send_message(message.chat.id, "I was not able to find similar paintings 😭")
                         
     except BaseException as e:
         print(e)

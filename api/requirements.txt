@@ -6,7 +6,12 @@ wheel>=0.29
 streamlit
 fastapi
 google-cloud-vision
+google-cloud-storage
 python-multipart
 python-dotenv
 requests
 uvicorn
+
+pandas
+fsspec
+gcsfs
