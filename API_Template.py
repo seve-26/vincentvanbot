@@ -8,7 +8,7 @@ from google.cloud import vision
 client = vision.ImageAnnotatorClient()
 
 # The name of the image file to annotate
-file_name = os.path.abspath('resources/wakeupcat.jpg')
+file_name = os.path.abspath('IMG_8618.jpg')
 
 # Loads the image into memory
 with io.open(file_name, 'rb') as image_file:
@@ -22,4 +22,4 @@ labels = response.label_annotations
 
 print('Labels:')
 for label in labels:
-    print(label.description)
+    print(label)
