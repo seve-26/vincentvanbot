@@ -21,7 +21,7 @@ def jpg_to_array(jpg_link):
 
 def preprocess_image(img, dim=(36,42)):
     """Takes img (either bytes or local path), returns np.array of flat,resized,normalized img"""
-    img = load_img('example-input.jpg', target_size=dim)
+    img = load_img(img, target_size=dim)
     img = img_to_array(img)
     img = img.flatten().reshape(1,-1)
     img = img / 255
