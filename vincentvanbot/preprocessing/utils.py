@@ -1,5 +1,6 @@
 import cv2
 import matplotlib.pyplot as plt
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 def resize_image(img,width=420,height=360):
     dim = (width, height)
@@ -17,3 +18,12 @@ def jpg_to_array(jpg_link):
     img_vector = plt.imread(jpg_link, format='jpg')
     
     return img_vector
+
+def preprocess_image(img, dim=(36,42)):
+    """Takes img (either bytes or local path), returns np.array of flat,resized,normalized img"""
+    img = load_img('example-input.jpg', target_size=dim)
+    img = img_to_array(img)
+    img = img.flatten().reshape(1,-1)
+    img = img / 255
+
+    return img
