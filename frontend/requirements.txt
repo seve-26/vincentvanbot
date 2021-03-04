@@ -1,0 +1,9 @@
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+streamlit
+python-dotenv
+requests
