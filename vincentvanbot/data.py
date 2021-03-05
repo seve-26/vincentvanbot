@@ -1,8 +1,9 @@
 import os
 import pandas as pd
+import joblib
 from vincentvanbot.preprocessing.utils import get_jpg_link
-from vincentvanbot.preprocessing.image import create_pickle_db, pickle_upload
-from vincentvanbot.params import IMAGES_PATH, PICKLE_PATH_ROOT, BUCKET_NAME, BUCKET_PICKLE_FOLDER
+from vincentvanbot.preprocessing.image import create_joblib_db, joblib_upload
+from vincentvanbot.params import IMAGES_PATH, JOBLIB_PATH_ROOT, BUCKET_NAME, BUCKET_JOBLIB_FOLDER
 from vincentvanbot.utils import download_single_image
 from google.cloud import storage
 
@@ -30,30 +31,38 @@ def download_images_locally(df):
     print(f'\nDownloading images to {IMAGES_PATH}...')
     df = df.progress_apply(download_single_image,axis=1)
 
-def get_pickle(size=100, source='gcp'):
-    """Gets pickle file from source and returns images df"""
-    client = storage.Client()
+def get_joblib_data(size=100, source='gcp', rm=True):
+    """Gets joblib file from source and returns images df"""
+    # client = storage.Client()
     if size:
-        PICKLE_PATH = PICKLE_PATH_ROOT+'_'+str(size)+'.pkl'
-        local_pickle_name = f'flat_resized_images_{str(size)}.pkl'
+        JOBLIB_PATH = JOBLIB_PATH_ROOT+'_'+str(size)+'.joblib'
+        local_joblib_name = f'flat_resized_images_{str(size)}.joblib'
     else:
-        PICKLE_PATH = PICKLE_PATH_ROOT+'.pkl'
-        local_pickle_name = 'flat_resized_images.pkl'
+        JOBLIB_PATH = JOBLIB_PATH_ROOT+'.joblib'
+        local_joblib_name = 'flat_resized_images.joblib'
     
     if source == 'local':
-        path = PICKLE_PATH
+        path = JOBLIB_PATH
+        img_df = joblib.load(path)
     elif source == 'gcp':
-        path = f"gs://{BUCKET_NAME}/{BUCKET_PICKLE_FOLDER}/{local_pickle_name}"
-    img_df = pd.read_pickle(path)
+        client = storage.Client().bucket(BUCKET_NAME)
+        # path = f"gs://{BUCKET_NAME}/{BUCKET_JOBLIB_FOLDER}/{local_joblib_name}"
+        storage_location = f"{BUCKET_JOBLIB_FOLDER}/{local_joblib_name}"
+        blob = client.blob(storage_location)
+        blob.download_to_filename(local_joblib_name)
+        img_df = joblib.load(local_joblib_name)
+        print(f"=> {local_joblib_name} downloaded from storage")
+        if rm:
+            os.remove(local_joblib_name)
 
     return img_df
 
 
 if __name__ == '__main__':
-    nrows=100
-    df = get_data_locally(nrows=nrows)
-    download_images_locally(df)
-    create_pickle_db(size=nrows, path=IMAGES_PATH, dim=(36,42))
-    pickle_upload(size=nrows, rm=True)
-    img_df = get_pickle(size=nrows, source='gcp')
-    print(img_df.shape)
+    nrows=10000
+    # df = get_data_locally(nrows=nrows)
+    # download_images_locally(df)
+    create_joblib_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
+    joblib_upload(size=nrows, rm=True)
+    # img_df = get_joblib_data(size=nrows, source='gcp')
+    # print(img_df.shape)
