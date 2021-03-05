@@ -7,6 +7,7 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 import pandas as pd
 import time
+from vincentvanbot.preprocessing.utils import preprocess_image, get_jpg_link
 
 # Uploading env variable
 env_path = join(dirname(__file__),'.env')
@@ -26,10 +27,19 @@ def load_file_from_gcp(file_path):
     
     return filename
 
-# Loading models
+# Loading models to memory
 catalogue = load_file_from_gcp('data/catalog.csv')
-#image_preprocessor = load_model_from_gcp('predict/image_preprocessing.joblib')
-#knn_model = load_model_from_gcp('predict/model.joblib')
+
+print("Downloading KNN model from GCP...")
+#knn_model_file = load_file_from_gcp('predict/model_10000.joblib')
+knn_model_file = 'predict_model_10000.joblib'
+print("Loading the KNN model to memory...")
+knn_model = joblib.load(knn_model_file)
+print("KNN model is downloaded and ready")
+
+train_indices_file = load_file_from_gcp('predict/train_indexes_10000.joblib')
+train_indices = joblib.load(train_indices_file)
+
 
 # Starting API server and uploading our catalogue to memory
 app = FastAPI()
@@ -61,23 +71,34 @@ def create_upload_file(file: UploadFile = File(...)):
 
 # Actual method that will be called with when we push our model to production
 def process_user_file(file, n_similar=3):
-    # PSEUDOCODE:
-    # 1. Get file from a user
+
+    # Getting a file from a user
     contents = file.read()
     temp_file_name = str(time.time())
     with open(temp_file_name, 'wb') as user_file:
         user_file.write(contents)
          
-    # 2. Preprossor function is downloaded from a joblib/pickle file {load_model_from_gcp...}. OUTPUT: Preprocessor function in a variable
-    # image_processed = image_preprocessor(temp_file_name)
+    # Sequence of bytes/file is passed to preprocessor {preproc.transform(X)}. OUTPUT: Vector of size matching the KNN model.
+    image_processed = preprocess_image(temp_file_name, dim = (100, 100))
     
-    # 3. Sequence of bytes/file is passed to preprocessor {preproc.transform(X)}. OUTPUT: Vector of size matching the KNN model.
-    # 4. Fitted KNN model is downloaded from a joblib/pickle file {load_model_from_gcp...}. OUTPUT: KNN model in a variable
-    # 5. n_similar closest neighbors are returned {knn_model} = their indices
-    # 6. Take the rows by indices, get HTML URLs
-    # 7. Convert HTML URLs to JPG urls.
-    # 8. Send response back. Response structure: [ n_similar pieces of {img_url, html_url, author, title, created, museum}]
-    pass
+    # n_similar closest neighbors are returned {knn_model} = their indice
+    index_neighbors = knn_model.kneighbors(image_processed, n_neighbors=n_similar)
+    base_indices = [int(train_indices[i]) for i in list(index_neighbors)]
+
+    # Send response back. Response structure: [ n_similar pieces of {img_url, html_url, author, title, created, museum}]
+    response = []
+    
+    for ind in base_indices:
+        response_item = dict (img_url = get_jpg_link(database.at[ind, 'URL']), html_url = database.at[ind, 'URL'], \
+            author = database.at[ind, 'AUTHOR'], title = database.at[ind, 'TITLE'], \
+            created = database.at[ind, 'DATE'],  museum =  database.at[ind, 'LOCATION'])
+        
+        response.append(response_item)
+      
+    # Deleting user pic  
+    os.remove(temp_file_name)
+
+    return response
 
 
 # Being used until we make our own model work
