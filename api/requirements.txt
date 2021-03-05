@@ -3,7 +3,13 @@ setuptools>=26
 twine
 wheel>=0.29
 
+# data science
+numpy
+pandas
+scikit-learn
+
 streamlit
+tensorflow
 fastapi
 google-cloud-vision
 google-cloud-storage
@@ -12,6 +18,7 @@ python-dotenv
 requests
 uvicorn
 
-pandas
+dill
 fsspec
 gcsfs
+joblib
