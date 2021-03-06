@@ -24,9 +24,13 @@ if img:
     files = {"file": (img.name, img, img.type)}
     response = requests.post(api_url, files=files).json()
     
-    st.markdown("#### So you will probably like these ones!")
-    for url in response:
-        st.image(url)
+    if response:
+        st.markdown("#### So you will probably like these paintings!")
+        # API stricture: {img_url, html_url, author, title, created, museum}
+        for response_item in response:
+            st.image(response_item['img_url'])
+    else:
+        st.markdown("#### We were not able to find similar paintings 😭")
     
     
     

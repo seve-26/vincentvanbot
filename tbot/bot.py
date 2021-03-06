@@ -9,7 +9,9 @@ from dotenv import load_dotenv
 env_path = join(dirname(__file__),'.env')
 load_dotenv(dotenv_path=env_path)
 TOKEN = os.getenv('TG_TOKEN')
+
 api_url = os.getenv('API_URL')
+api_dummy_url = os.getenv('API_DUMMY_URL')
 
 bot = telebot.TeleBot(TOKEN)
 telegram_download_link = f'https://api.telegram.org/file/bot{TOKEN}/'
@@ -21,8 +23,28 @@ UNSUPPORTED_TYPES = ['audio', 'document', 'sticker', 'video', 'video_note', \
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "Hello! Just send me a picture")
-    
+    bot.send_message(message.chat.id, "Hello! Just send me a picture")
+    os.environ[str(message.chat.id) + 'DUMMY'] = ''
+
+@bot.message_handler(commands=['dummy'])
+def switch_to_dummy(message):
+    os.environ[str(message.chat.id) + 'DUMMY'] = '1'
+    bot.send_message(message.chat.id, "Don't expect me to work well now 🤪🤪🤪")
+    bot.send_message(message.chat.id, "But send me a picture!")
+
+@bot.message_handler(commands=['main'])
+def switch_to_main(message):
+    os.environ[str(message.chat.id) + 'DUMMY'] = ''
+    bot.send_message(message.chat.id, "Ready to the serious work again 🤓")
+    bot.send_message(message.chat.id, "Send me a picture 🎨")
+
+@bot.message_handler(commands=['which'])
+def check_model(message):
+    if os.getenv(str(message.chat.id) + 'DUMMY'):
+        bot.send_message(message.chat.id, "Still in the dummy mode 😜")
+    else:
+        bot.send_message(message.chat.id, "The main mode is on! Ready to perform!")
+
 @bot.message_handler(content_types=UNSUPPORTED_TYPES)
 def default_reply(message):
     bot.send_message(message.chat.id, "Unfortunately I cannot work with this data type 😢")
@@ -30,12 +52,12 @@ def default_reply(message):
  
 @bot.message_handler(content_types=['text'])
 def reply_text(message):
-    bot.reply_to(message, "I'm not very talkative. Better send me a picture 😅")
+    bot.send_message(message.chat.id, "I'm not very talkative. Better send me a picture 😅")
 
 
 @bot.message_handler(content_types=['photo'])
 def process_image(message):
-    bot.reply_to(message, 'Got it! Just wait a little bit now.... 😄 🐌🐌') 
+    bot.send_message(message.chat.id, 'Got it! Just wait a little bit now.... 😄 🐌🐌')
 
     try:
         # Prepares a photo on the Telegram API server and downloads it from there
@@ -44,29 +66,37 @@ def process_image(message):
         downloaded = requests.get(download_url)
     
         # Sends the downloaded picture to our API server
+        request_url = api_dummy_url if os.getenv(str(message.chat.id) + 'DUMMY') else api_url
         files = {"file": (pic.file_path.split('/')[1], downloaded.content, 'image/jpeg')}
-        api_response = requests.post(api_url, files=files).json()
-    
-        # Processes a response received from our API server        
-        for url in api_response:
-            pic_received = requests.get(url).content
+        api_response = requests.post(request_url, files=files).json()
         
-            # If picture is larger then 10 Mb, resize it before sending
-            while (len(pic_received) > 10000000):
-                img = Image.open(io.BytesIO(pic_received))
-                img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.ANTIALIAS)
+        if api_response:
+            # Processes a response received from our API server    
+            # API stricture: {img_url, html_url, author, title, created, museum}  
+            for response_item in api_response:
+                pic_received = requests.get(response_item['img_url']).content
+        
+                # If picture is larger then 10 Mb, resize it before sending
+                while (len(pic_received) > 10000000):
+                    img = Image.open(io.BytesIO(pic_received))
+                    img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.ANTIALIAS)
             
-                byteIO = io.BytesIO()
-                img.save(byteIO, format='PNG')
-                pic_received = byteIO.getvalue()
-        
-            bot.send_photo(message.chat.id, pic_received)
-            bot.send_message(message.chat.id, "URL: " + url, disable_web_page_preview=True)
+                    byteIO = io.BytesIO()
+                    img.save(byteIO, format='PNG')
+                    pic_received = byteIO.getvalue()
+                    
+                # Sends painting and description to the chat
+                bot.send_photo(message.chat.id, pic_received)
+                reply = f"<i>Title:</i> {response_item['title']}\n<i>Author:</i> {response_item['author']}\n" + \
+                        f"<i>Created:</i> {response_item['created']}\n<i>Museum:</i> {response_item['museum']}\n\n" + \
+                        f"Link: {response_item['html_url']}"
+                bot.send_message(message.chat.id, reply, disable_web_page_preview=True, parse_mode='HTML')
+        else:
+            bot.send_message(message.chat.id, "I was not able to find similar paintings 😭")
                         
     except BaseException as e:
         print(e)
         bot.send_message(message.chat.id, 'Oops! Something crashed in the middle 🚑🤖... ')
         bot.send_message(message.chat.id, 'Please try again or use another photo 🤷🤷‍♂️')
-
 
 bot.polling(none_stop=True)
