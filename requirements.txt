@@ -29,8 +29,6 @@ memoized-property
 termcolor
 
 # manually added
-opencv-python
-matplotlib
 requests
 tqdm
 tensorflow
