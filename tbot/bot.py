@@ -40,7 +40,7 @@ def switch_to_main(message):
 
 @bot.message_handler(commands=['which'])
 def check_model(message):
-    if os.environ[str(message.chat.id) + 'DUMMY']:
+    if os.getenv(str(message.chat.id) + 'DUMMY'):
         bot.send_message(message.chat.id, "Still in the dummy mode 😜")
     else:
         bot.send_message(message.chat.id, "The main mode is on! Ready to perform!")
@@ -66,7 +66,7 @@ def process_image(message):
         downloaded = requests.get(download_url)
     
         # Sends the downloaded picture to our API server
-        request_url = api_dummy_url if os.environ[str(message.chat.id) + 'DUMMY'] else api_url
+        request_url = api_dummy_url if os.getenv(str(message.chat.id) + 'DUMMY') else api_url
         files = {"file": (pic.file_path.split('/')[1], downloaded.content, 'image/jpeg')}
         api_response = requests.post(request_url, files=files).json()
         
