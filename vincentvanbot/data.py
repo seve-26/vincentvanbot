@@ -1,14 +1,11 @@
 import os
 import pandas as pd
 import joblib
-from vincentvanbot.preprocessing.utils import get_jpg_link
-from vincentvanbot.preprocessing.image import create_joblib_db, joblib_upload
-from vincentvanbot.params import IMAGES_PATH, JOBLIB_PATH_ROOT, BUCKET_NAME, BUCKET_JOBLIB_FOLDER
-from vincentvanbot.utils import download_single_image
+from vincentvanbot.params import IMAGES_PATH, FLAT_IMAGES_DB_PATH_ROOT, BUCKET_NAME, BUCKET_FLAT_IMAGES_DB_FOLDER
+from vincentvanbot.utils import download_single_image, get_jpg_link, preprocess_image
 from google.cloud import storage
-
 from tqdm import tqdm
-tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
+
 
 def get_data_locally(nrows=10):
     """Return df with initial database and jpg image"""
@@ -26,19 +23,57 @@ def get_data_locally(nrows=10):
 
 def download_images_locally(df):
     """Saves jpg files under raw_data/images based on paintings in df"""
+    tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
+
     if not os.path.exists(IMAGES_PATH):
         os.mkdir(IMAGES_PATH)
     print(f'\nDownloading images to {IMAGES_PATH}...')
     df = df.progress_apply(download_single_image,axis=1)
 
-def get_joblib_data(size=100, source='gcp', rm=True):
-    """Gets joblib file from source and returns images df"""
-    # client = storage.Client()
+def create_flat_images_db(size=100, path=IMAGES_PATH, dim=(36,42)):
+    """For each image in path, resizes it to the given dim, transforms it into a flat vector
+    and stores in a df. Then dumps it into a joblib file"""
+
+    # stores flat images in a dataframe
+    img_db = pd.DataFrame()
+    print("\nCreating joblib database...")
+    for filename in tqdm(os.listdir(IMAGES_PATH)[:size], bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}'):
+        img = preprocess_image(os.path.join(IMAGES_PATH, filename),dim=dim)
+        img_db = img_db.append(pd.DataFrame(img,index=[filename.strip('.jpg')]))
+
+    # save df to joblib file
+    img_db.sort_index(inplace=True)
     if size:
-        JOBLIB_PATH = JOBLIB_PATH_ROOT+'_'+str(size)+'.joblib'
+        joblib.dump(img_db,FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib')
+    else:
+        joblib.dump(img_db,FLAT_IMAGES_DB_PATH_ROOT+'.joblib')
+
+def flat_images_db_upload(size=100, rm=False):
+    """Upload df of flat image vectors as joblib file to google cloud"""
+    client = storage.Client().bucket(BUCKET_NAME)
+
+    if size:
+        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
         local_joblib_name = f'flat_resized_images_{str(size)}.joblib'
     else:
-        JOBLIB_PATH = JOBLIB_PATH_ROOT+'.joblib'
+        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'.joblib'
+        local_joblib_name = 'flat_resized_images.joblib'
+    
+    storage_location = f"data/{local_joblib_name}"
+    blob = client.blob(storage_location)
+    blob.upload_from_filename(JOBLIB_PATH)
+    print(f"\n=> {local_joblib_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}")
+    if rm:
+        os.remove(JOBLIB_PATH)
+
+def flat_images_db_download(size=100, source='gcp', rm=True):
+    """Downloads df of flat image vectors as joblib file from source and returns it"""
+    # client = storage.Client()
+    if size:
+        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
+        local_joblib_name = f'flat_resized_images_{str(size)}.joblib'
+    else:
+        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'.joblib'
         local_joblib_name = 'flat_resized_images.joblib'
     
     if source == 'local':
@@ -46,8 +81,8 @@ def get_joblib_data(size=100, source='gcp', rm=True):
         img_df = joblib.load(path)
     elif source == 'gcp':
         client = storage.Client().bucket(BUCKET_NAME)
-        # path = f"gs://{BUCKET_NAME}/{BUCKET_JOBLIB_FOLDER}/{local_joblib_name}"
-        storage_location = f"{BUCKET_JOBLIB_FOLDER}/{local_joblib_name}"
+        # path = f"gs://{BUCKET_NAME}/{BUCKET_FLAT_IMAGES_DB_FOLDER}/{local_joblib_name}"
+        storage_location = f"{BUCKET_FLAT_IMAGES_DB_FOLDER}/{local_joblib_name}"
         blob = client.blob(storage_location)
         blob.download_to_filename(local_joblib_name)
         img_df = joblib.load(local_joblib_name)
@@ -62,7 +97,7 @@ if __name__ == '__main__':
     nrows=10000
     # df = get_data_locally(nrows=nrows)
     # download_images_locally(df)
-    create_joblib_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
-    joblib_upload(size=nrows, rm=True)
-    # img_df = get_joblib_data(size=nrows, source='gcp')
+    create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
+    flat_images_db_upload(size=nrows, rm=True)
+    # img_df = flat_images_db_download(size=nrows, source='gcp')
     # print(img_df.shape)

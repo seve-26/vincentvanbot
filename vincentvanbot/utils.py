@@ -1,9 +1,51 @@
 import os
 import io
 import requests
-from google.cloud import vision
-from vincentvanbot.params import IMAGES_PATH, LABELS_SELECTION
+from PIL import Image
+from pathlib import Path
+import numpy as np
+from vincentvanbot.params import IMAGES_PATH, PIL_INTERPOLATION_METHODS
 
+
+def get_jpg_link(html_link):
+    """Tranform the html_link of the image to its respective jpg_link"""
+    jpg_link = html_link.replace('html','art', 1).replace('html','jpg')
+    
+    return jpg_link
+
+def load_img(path,target_size=(100,100), interpolation='nearest'):
+    """read the path/image in bytes, and store it in img"""
+    if isinstance(path, io.BytesIO):
+        img = Image.open(path)
+    elif isinstance(path, (Path, bytes, str)):
+        if isinstance(path, Path):
+            path = str(path.resolve())
+        with open(path, 'rb') as f:
+            img = Image.open(io.BytesIO(f.read()))
+    else:
+        raise TypeError('path should be path-like or io.BytesIO'
+                        ', not {}'.format(type(path)))
+    
+    # resize the image
+    if target_size is not None:
+        width_height_tuple = (target_size[1], target_size[0])
+        resample = PIL_INTERPOLATION_METHODS[interpolation]
+        img = img.resize(width_height_tuple, resample)
+    
+    return img
+
+def img_to_array(img, dtype='float32'):
+    """Given a PIL image object, returns it's vectorial representation"""
+    x = np.asarray(img, dtype=dtype)
+    if len(x.shape) == 2:
+            x = x.reshape((x.shape[0], x.shape[1], 1))
+    return x
+
+def jpg_to_array(jpg_link):
+    """Given an image jpg_link, it returns its vectorial representation"""
+    img = Image.open(requests.get(test_link, stream=True).raw)
+    
+    return img_to_array(img)
 
 def download_single_image(df_row):
     response = requests.get(df_row['URL'])
@@ -11,61 +53,6 @@ def download_single_image(df_row):
     f.write(response.content)
     f.close()
     return df_row
-
-def get_labels_from_url(uri, max_results, proba_threshold=0.6):
-    """Takes in uri (i.e. jpg link to an image). Returns dictionary having as keys the identified
-    labels, and as values their related proba.
-    In particular:
-    - only labels with proba > proba_threshold
-    - a maximum of max_results different labels
-    - only labels manually defined in LABELS_SELECTION"""
-
-    # connect to google vision
-    client = vision.ImageAnnotatorClient()
-    image = vision.Image()
-
-    # get labels for input uri
-    image.source.image_uri = uri
-    response = client.label_detection(image=image, max_results=max_results)
-    labels = response.label_annotations
-
-    # create dict having as keys all labels, as values their related probas
-    # filter dict to only include labels in LABELS_SELECTION and proba > proba_threshold
-    labels_dict = {}
-    for label in labels:
-        if label.description in LABELS_SELECTION and label.score > proba_threshold:
-            labels_dict[label.description] = label.score
-    
-    return labels_dict
-
-def get_labels_from_local_path(path, max_results, proba_threshold=0.6):
-    """Takes in path (i.e. path to an image). Returns dictionary having as keys the identified
-    labels, and as values their related proba.
-    In particular:
-    - only labels with proba > proba_threshold
-    - a maximum of max_results different labels
-    - only labels manually defined in LABELS_SELECTION"""
-
-    # open image file
-    with io.open(path, 'rb') as image_file:
-        content = image_file.read()
-
-    # connect to google vision
-    client = vision.ImageAnnotatorClient()
-    image = vision.Image(content=content)
-
-    # get labels for input path
-    response = client.label_detection(image=image, max_results=max_results)
-    labels = response.label_annotations
-
-    # create dict having as keys all labels, as values their related probas
-    # filter dict to only include labels in LABELS_SELECTION and proba > proba_threshold
-    labels_dict = {}
-    for label in labels:
-        if label.description in LABELS_SELECTION and label.score > proba_threshold:
-            labels_dict[label.description] = label.score
-    
-    return labels_dict
 
 
 if __name__ == '__main__':

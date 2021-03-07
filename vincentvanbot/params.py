@@ -1,11 +1,12 @@
-import os
+from os.path import abspath, join, dirname 
 
-IMAGES_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','raw_data','images'))
-JOBLIB_PATH_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','raw_data','flat_resized_images'))
+# paths
+IMAGES_PATH = abspath(join(dirname(__file__),'..','raw_data','images'))
+FLAT_IMAGES_DB_PATH_ROOT = abspath(join(dirname(__file__),'..','raw_data','flat_resized_images'))
 
 # gcloud
 BUCKET_NAME='vincent-van-bot-bucket'
-BUCKET_JOBLIB_FOLDER='data'
+BUCKET_FLAT_IMAGES_DB_FOLDER='data'
 BUCKET_INITIAL_DATASET_FOLDER = 'data'
 
 # labels
@@ -15,3 +16,10 @@ LABELS_SELECTION = [
     'Sculpture','Font', 'Tree', 'Sky', 'Carving', 'Landscape', 'Metal', 'Middle ages', 'Prophet',
     'Arch', 'Cloud', 'Building'
     ]
+
+# others
+PIL_INTERPOLATION_METHODS = {
+        'nearest': Image.NEAREST,
+        'bilinear': Image.BILINEAR,
+        'bicubic': Image.BICUBIC,
+    }
