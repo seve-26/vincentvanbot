@@ -54,41 +54,40 @@ def flat_images_db_upload(size=100, rm=False):
     client = storage.Client().bucket(BUCKET_NAME)
 
     if size:
-        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
-        local_joblib_name = f'flat_resized_images_{str(size)}.joblib'
+        FLAT_IMAGES_DB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
+        local_images_db_name = f'flat_resized_images_{str(size)}.joblib'
     else:
-        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'.joblib'
-        local_joblib_name = 'flat_resized_images.joblib'
+        FLAT_IMAGES_DB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'.joblib'
+        local_images_db_name = 'flat_resized_images.joblib'
     
-    storage_location = f"data/{local_joblib_name}"
+    storage_location = f"data/{local_images_db_name}"
     blob = client.blob(storage_location)
-    blob.upload_from_filename(JOBLIB_PATH)
-    print(f"\n=> {local_joblib_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}")
+    blob.upload_from_filename(FLAT_IMAGES_DB_PATH)
+    print(f"\n=> {local_images_db_name} uploaded to bucket {BUCKET_NAME} inside {storage_location}")
     if rm:
-        os.remove(JOBLIB_PATH)
+        os.remove(FLAT_IMAGES_DB_PATH)
 
 def flat_images_db_download(size=100, source='gcp', rm=True):
     """Downloads df of flat image vectors as joblib file from source and returns it"""
     if size:
-        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
-        local_joblib_name = f'flat_resized_images_{str(size)}.joblib'
+        FLAT_IMAGES_DB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
+        local_images_db_name = f'flat_resized_images_{str(size)}.joblib'
     else:
-        JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'.joblib'
-        local_joblib_name = 'flat_resized_images.joblib'
+        FLAT_IMAGES_DB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'.joblib'
+        local_images_db_name = 'flat_resized_images.joblib'
     
     if source == 'local':
-        path = JOBLIB_PATH
+        path = FLAT_IMAGES_DB_PATH
         img_df = joblib.load(path)
     elif source == 'gcp':
         client = storage.Client().bucket(BUCKET_NAME)
-        # path = f"gs://{BUCKET_NAME}/{BUCKET_FLAT_IMAGES_DB_FOLDER}/{local_joblib_name}"
-        storage_location = f"{BUCKET_FLAT_IMAGES_DB_FOLDER}/{local_joblib_name}"
+        storage_location = f"{BUCKET_FLAT_IMAGES_DB_FOLDER}/{local_images_db_name}"
         blob = client.blob(storage_location)
-        blob.download_to_filename(local_joblib_name)
-        img_df = joblib.load(local_joblib_name)
-        print(f"=> {local_joblib_name} downloaded from storage")
+        blob.download_to_filename(local_images_db_name)
+        img_df = joblib.load(local_images_db_name)
+        print(f"=> {local_images_db_name} downloaded from storage")
         if rm:
-            os.remove(local_joblib_name)
+            os.remove(local_images_db_name)
 
     return img_df
 
