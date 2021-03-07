@@ -1,5 +1,6 @@
-from vincentvanbot.visionlabels.apicall import get_labels_from_url, get_labels_from_local_path
-from os.path import join, dirname
+from vincentvanbot.params import IMAGES_PATH
+from vincentvanbot.utils import get_labels_from_url, get_labels_from_local_path
+from os.path import join
 
 from tqdm import tqdm
 tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
@@ -13,7 +14,7 @@ def get_labels_row(row, max_results, proba_threshold,source):
             proba_threshold=proba_threshold
             )
     elif source == 'local':
-        path = join(dirname(__file__),'..','..','raw_data','images',str(row.name) + '.jpg')
+        path = join(IMAGES_PATH, str(row.name) + '.jpg')
         labels_dict = get_labels_from_local_path(
             path,
             max_results=max_results,
