@@ -48,8 +48,13 @@ def get_labels_from_local_path(path, max_results, proba_threshold=0.6, manual=Tr
     - only labels manually defined in LABELS_SELECTION (if manual)"""
 
     # open image file
-    with io.open(path, 'rb') as image_file:
-        content = image_file.read()
+    try:
+        with io.open(path, 'rb') as image_file:
+            content = image_file.read()
+    except FileNotFoundError:
+        print(f"{path} not found")
+        return {}
+    
 
     # connect to google vision
     client = vision.ImageAnnotatorClient()
@@ -133,7 +138,7 @@ def labels_df_upload(labels_df, rm=True):
 
 if __name__ == '__main__':
     from vincentvanbot.data import get_data_locally
-    df = get_data_locally(100_000)
+    df = get_data_locally(10)
     labels_df = get_labels_df(df,100_000, source='local', manual=False)
     # print(labels_df)
     labels_df_upload(labels_df)
