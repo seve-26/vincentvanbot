@@ -135,5 +135,5 @@ if __name__ == '__main__':
     from vincentvanbot.data import get_data_locally
     df = get_data_locally(100_000)
     labels_df = get_labels_df(df,100_000, source='local', manual=False)
-    print(labels_df)
-    # labels_df_upload(labels_df)
+    # print(labels_df)
+    labels_df_upload(labels_df)
