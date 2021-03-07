@@ -138,7 +138,17 @@ def labels_df_upload(labels_df, rm=True):
 
 if __name__ == '__main__':
     from vincentvanbot.data import get_data_locally
-    df = get_data_locally(10)
-    labels_df = get_labels_df(df,100_000, source='local', manual=False)
-    # print(labels_df)
-    labels_df_upload(labels_df)
+    df_total = get_data_locally(100)
+    
+    import numpy as np
+    df_list = []
+    for i, df in enumerate(np.array_split(df_total,10)):
+        print(f"\nWorking on slice {i+1}")
+        labels_df = get_labels_df(df,100_000, source='local', manual=False)
+        df_list.append(labels_df)
+    
+    import pandas as pd
+    labels_df_total = pd.concat(df_list,axis=0)
+    labels_df_total.fillna(0, inplace= True)
+    # labels_df_upload(labels_df_total)
+    print(labels_df_total.head(5))
