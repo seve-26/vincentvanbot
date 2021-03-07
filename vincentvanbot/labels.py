@@ -107,3 +107,5 @@ if __name__ == '__main__':
     df = get_data_locally(5)
     labels_df = get_labels_df(df,25, source='local')
     print(labels_df)
+    labels_df = get_labels_df(df,25, source='url')
+    print(labels_df)

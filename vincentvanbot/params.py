@@ -16,10 +16,3 @@ LABELS_SELECTION = [
     'Sculpture','Font', 'Tree', 'Sky', 'Carving', 'Landscape', 'Metal', 'Middle ages', 'Prophet',
     'Arch', 'Cloud', 'Building'
     ]
-
-# others
-PIL_INTERPOLATION_METHODS = {
-        'nearest': Image.NEAREST,
-        'bilinear': Image.BILINEAR,
-        'bicubic': Image.BICUBIC,
-    }

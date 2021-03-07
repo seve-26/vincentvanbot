@@ -31,4 +31,8 @@ if __name__ == '__main__':
     df = get_data_locally(nrows=100_000)
     pipe = build_pipe_for_categorical()
     array_transformed = pipe.fit_transform(df)
-    print(array_transformed.shape)
+    print("Shape of transformed df - categorical",array_transformed.shape)
+    from os.path import dirname, join
+    image_path = join(dirname(__file__),'..','notebooks','example-input.jpg')
+    image_vector = preprocess_image(image_path)
+    print("Shape of transformed image",image_vector.shape)

@@ -4,7 +4,13 @@ import requests
 from PIL import Image
 from pathlib import Path
 import numpy as np
-from vincentvanbot.params import IMAGES_PATH, PIL_INTERPOLATION_METHODS
+from vincentvanbot.params import IMAGES_PATH
+
+PIL_INTERPOLATION_METHODS = {
+        'nearest': Image.NEAREST,
+        'bilinear': Image.BILINEAR,
+        'bicubic': Image.BICUBIC,
+    }
 
 
 def get_jpg_link(html_link):
@@ -56,11 +62,4 @@ def download_single_image(df_row):
 
 
 if __name__ == '__main__':
-    from vincentvanbot.data import get_data_locally
-    df = get_data_locally(nrows=100_000)
-    url_list = list(df.sample(3)['URL'])
-    print([get_labels_from_url(url,25) for url in url_list])
-
-    # from os.path import join, dirname
-    # path = join(dirname(__file__),'..','raw_data','images','0.jpg')
-    # print(get_labels_from_local_path(path,25))
+    pass

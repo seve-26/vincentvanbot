@@ -2,7 +2,8 @@ import os
 import pandas as pd
 import joblib
 from vincentvanbot.params import IMAGES_PATH, FLAT_IMAGES_DB_PATH_ROOT, BUCKET_NAME, BUCKET_FLAT_IMAGES_DB_FOLDER
-from vincentvanbot.utils import download_single_image, get_jpg_link, preprocess_image
+from vincentvanbot.utils import download_single_image, get_jpg_link
+from vincentvanbot.preprocessing import preprocess_image
 from google.cloud import storage
 from tqdm import tqdm
 
@@ -68,7 +69,6 @@ def flat_images_db_upload(size=100, rm=False):
 
 def flat_images_db_download(size=100, source='gcp', rm=True):
     """Downloads df of flat image vectors as joblib file from source and returns it"""
-    # client = storage.Client()
     if size:
         JOBLIB_PATH = FLAT_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib'
         local_joblib_name = f'flat_resized_images_{str(size)}.joblib'
@@ -94,10 +94,10 @@ def flat_images_db_download(size=100, source='gcp', rm=True):
 
 
 if __name__ == '__main__':
-    nrows=10000
-    # df = get_data_locally(nrows=nrows)
-    # download_images_locally(df)
+    nrows=10
+    df = get_data_locally(nrows=nrows)
+    download_images_locally(df)
     create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
     flat_images_db_upload(size=nrows, rm=True)
-    # img_df = flat_images_db_download(size=nrows, source='gcp')
-    # print(img_df.shape)
+    img_df = flat_images_db_download(size=nrows, source='gcp')
+    print(img_df.shape)

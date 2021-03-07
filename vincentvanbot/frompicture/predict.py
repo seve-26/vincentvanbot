@@ -1,3 +1,5 @@
+"""This file is used to predict paintings that are closest to the given picture."""
+
 import os
 import joblib
 from google.cloud import storage
@@ -12,7 +14,7 @@ def get_closest_images_indexes(user_input_transformed, nsimilar=3, rm=True):
     client = storage.Client().bucket(BUCKET_NAME)
     
     # download model
-    local_name = 'model_10000.joblib'
+    local_name = 'model.joblib'
     storage_location = f"predict/{local_name}"
     blob = client.blob(storage_location)
     blob.download_to_filename(local_name)
@@ -20,7 +22,7 @@ def get_closest_images_indexes(user_input_transformed, nsimilar=3, rm=True):
     model = joblib.load(local_name)
     
     # download indexes
-    local_name = 'train_indexes_10000.joblib'
+    local_name = 'train_indexes.joblib'
     storage_location = f"predict/{local_name}"
     blob = client.blob(storage_location)
     blob.download_to_filename(local_name)
@@ -28,8 +30,8 @@ def get_closest_images_indexes(user_input_transformed, nsimilar=3, rm=True):
     indexes = joblib.load(local_name)
     
     if rm:
-        os.remove('model_10000.joblib')
-        os.remove('train_indexes_10000.joblib')
+        os.remove('model.joblib')
+        os.remove('train_indexes.joblib')
     
     index_neighbors = model.kneighbors(user_input_transformed, n_neighbors=nsimilar)[1][0]
     
@@ -62,7 +64,7 @@ if __name__=='__main__':
     from vincentvanbot.preprocessing import preprocess_image
     path = os.path.join(os.path.dirname(__file__),'..','..','notebooks','example-input.jpg')
     # print(path)
-    user_img = preprocess_image(path,dim=(100,100))
+    user_img = preprocess_image(path,dim=(36,42))
     indexes = get_closest_images_indexes(user_img)
     urls = get_info_from_index(indexes)
     print(urls)
