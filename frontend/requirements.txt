@@ -7,3 +7,5 @@ wheel>=0.29
 streamlit
 python-dotenv
 requests
+google-cloud-storage
+pandas
