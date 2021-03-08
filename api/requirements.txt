@@ -8,8 +8,6 @@ numpy
 pandas
 scikit-learn
 
-streamlit
-tensorflow
 fastapi
 google-cloud-vision
 google-cloud-storage
@@ -22,3 +20,4 @@ dill
 fsspec
 gcsfs
 joblib
+pillow
