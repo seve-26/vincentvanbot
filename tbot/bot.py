@@ -110,14 +110,12 @@ def process_image(message):
                     img.save(byteIO, format='PNG')
                     pic_received = byteIO.getvalue()
                 
-                reply = f"<i>Title:</i> {response_item['title']}\n<i>Author:</i> {response_item['author']}\n" + \
-                        f"<i>Created:</i> {response_item['created']}\n<i>Museum:</i> {response_item['museum']}\n\n" + \
-                        f"Link: {response_item['html_url']}"
+                reply = f'<i>Title:</i> <a href="{response_item["html_url"]}">{response_item["title"]}</a>\n<i>Author:</i> {response_item["author"]}\n' + \
+                        f"<i>Created:</i> {response_item['created']}\n<i>Museum:</i> {response_item['museum']}\n\n"
                     
                 if len(api_response) == 1:    
                     # Sends painting and description to the chat
-                    bot.send_photo(message.chat.id, pic_received)
-                    bot.send_message(message.chat.id, reply, disable_web_page_preview=True, parse_mode='HTML')
+                    bot.send_photo(message.chat.id, pic_received, caption=reply, parse_mode = 'HTML')
                 else:
                     # Or adds them to send later
                     returned_photos.append(types.InputMediaPhoto(pic_received, caption=reply, parse_mode='HTML'))
