@@ -50,7 +50,7 @@ def create_flat_images_db(size=100, path=IMAGES_PATH, dim=(36,42)):
 def create_joined_img_df(build_pipe_for_categorical, img_db, size=32008):
     img_db.index = [int(i) for i in img_db.index] # transform index from str to int
     pipe = build_pipe_for_categorical()
-    array_transformed = pd.DataFrame(pipe.fit_transform(get_data_locally(nrows=32008)))
+    array_transformed = pd.DataFrame(pipe.fit_transform(get_data_locally(nrows=size)))
     join_images_db = pd.DataFrame(img_db.join(array_transformed, lsuffix='_left', rsuffix='_right'))
 
     # save df to joblib file
