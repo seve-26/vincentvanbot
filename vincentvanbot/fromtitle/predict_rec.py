@@ -1,32 +1,26 @@
-"""This file is used to predict paintings that are closest to the given picture."""
+"""This file is used to predict paintings that are closest to the given title of painting."""
 
 import os
 import joblib
 from google.cloud import storage
 import pandas as pd
 from vincentvanbot.params import BUCKET_NAME, BUCKET_INITIAL_DATASET_FOLDER
-from vincentvanbot.utils import get_jpg_link
+from vincentvanbot.utils import get_jpg_link, download_single_image
 
 
-def search_title(regex: str, df, case=False):
-    """User input is title of image as a string. Search title column of original df, return respective row(s) with any matches."""
-    matched_row = df[df['TITLE'].str.contains(regex, regex=True, case=case, na=False)][:1]
 
-    return matched_row
+def transform_user_input(str, df, case=False):
+    """User input is a title of an image as a string. Search title column of original df,
+    return index of respective row."""
+    matched_row = df[df['TITLE'].str.contains(str, case=case, na=False)][:1]
+    user_idx = matched_row.index[0]
 
-
-def user_input_transformed(path, search_title):
-    """Get local path, correlating index and apply preprocessing function"""
-    df_row = download_single_image(matched_row)
-    img = load_img(path,target_size=(100,100), interpolation='nearest')
-    img = preprocess_image(img, dim=(100,100))
-
-    return img
+    return user_idx
 
 
 def get_closest_images_indexes(user_input_transformed, nsimilar=3, rm=True):
-    """Takes user_input_transformed as np.array. Downloads fitted knn model and related indexes.
-    Returns indexes of nsimilar closest images"""
+    """Takes user_input_transformed as np.array. Downloads fitted knn model and
+    related indexes. Returns indexes of nsimilar closest images"""
     client = storage.Client().bucket(BUCKET_NAME)
 
     # download model
@@ -77,10 +71,9 @@ def get_info_from_index(indexes, all_info=False):
 
 
 if __name__=='__main__':
-    from vincentvanbot.preprocessing import preprocess_image
-    path = os.path.join(os.path.dirname(__file__),'..','..','notebooks','example-input.jpg')
-    # print(path)
-    user_img = preprocess_image(path,dim=(36,42))
-    indexes = get_closest_images_indexes(user_img)
+    user_idx = transform_user_input('art', df, case=False)
+    user_input_transformed = create_joined_img_df(build_pipe_for_categorical, img_db, size=32008).iloc[[user_idx]]
+    indexes = get_closest_images_indexes(user_idx)
     urls = get_info_from_index(indexes)
     print(urls)
+
