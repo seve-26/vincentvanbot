@@ -9,13 +9,14 @@ from vincentvanbot.utils import get_jpg_link, download_single_image
 
 
 
-def transform_user_input(str, df, case=False):
+def transform_user_input(regex: str, df, case=False):
     """User input is a title of an image as a string. Search title column of original df,
     return index of respective row."""
-    matched_row = df[df['TITLE'].str.contains(str, case=case, na=False)][:1]
+    matched_row = df[df['TITLE'].str.contains(regex, regex=True, case=case, na=False)][:1]
     user_idx = matched_row.index[0]
 
     return user_idx
+
 
 
 def get_closest_images_indexes(user_input_transformed, nsimilar=3, rm=True):
@@ -47,6 +48,7 @@ def get_closest_images_indexes(user_input_transformed, nsimilar=3, rm=True):
 
     return [int(indexes[i]) for i in list(index_neighbors)]
 
+
 def get_info_from_index(indexes, all_info=False):
     """From given image indexes, gets initial dataset from gcloud
     and returns respective information (urls, etc.)"""
@@ -71,9 +73,12 @@ def get_info_from_index(indexes, all_info=False):
 
 
 if __name__=='__main__':
-    user_idx = transform_user_input('art', df, case=False)
-    user_input_transformed = create_joined_img_df(build_pipe_for_categorical, img_db, size=32008).iloc[[user_idx]]
-    indexes = get_closest_images_indexes(user_idx)
+    from vincentvanbot.fromtitle.data_rec import create_joined_img_df, create_flat_images_db, get_data_locally
+    from vincentvanbot.preprocessing import build_pipe_for_categorical
+
+    user_idx = transform_user_input('art', get_data_locally, case=False)
+    user_input_transformed = create_joined_img_df(build_pipe_for_categorical, img_db, size=3200).iloc[[user_idx]]
+    indexes = get_closest_images_indexes(user_input_transformed)
     urls = get_info_from_index(indexes)
     print(urls)
 
