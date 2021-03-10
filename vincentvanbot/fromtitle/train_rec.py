@@ -31,6 +31,6 @@ def save_model_to_cloud(rm=False):
 
 if __name__=='__main__':
     from vincentvanbot.fromtitle.data_rec import joined_images_db_download
-    train_df = joined_images_db_download(size=9000, source='gcp', rm=True)
+    train_df = joined_images_db_download(size=32008, source='gcp', rm=True)
     train_model(train_df)
     save_model_to_cloud(rm=True)

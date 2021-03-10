@@ -8,9 +8,9 @@ from google.cloud import storage
 from tqdm import tqdm
 
 
-def get_data_locally(nrows=32008):
+def get_data_locally(nrows=10):
     """Return df with initial database and jpg image"""
-    path = os.path.join(os.path.dirname(__file__),'..','data', 'raw_data','catalog.csv')
+    path = os.path.join(os.path.dirname(__file__),'..', '..','raw_data','catalog.csv')
     # encode to take care of non-ASCII characters such as 'ö'
     df = pd.read_csv(path, encoding= 'unicode_escape')
 
@@ -34,7 +34,7 @@ def download_images_locally(df):
 
 
 
-def create_flat_images_db(size=32008, path=IMAGES_PATH, dim=(36,42)):
+def create_flat_images_db(size=100, path=IMAGES_PATH, dim=(36,42)):
     """For each image in path, resizes it to the given dim, transforms it into a flat vector
     and stores in a df. Then dumps it into a joblib file"""
 
@@ -112,9 +112,18 @@ def joined_images_db_download(size=32008, source='gcp', rm=True):
 if __name__ == '__main__':
     nrows=32008
     df = get_data_locally(nrows=nrows)
-    img_db = create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(36,42))
     download_images_locally(df)
+    img_db = create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(36,42))
     create_joined_img_df(build_pipe_for_categorical, img_db, size=nrows)
     joined_images_db_upload(size=nrows, rm=True)
     joined_img_df = joined_images_db_download(size=nrows, source='gcp')
     print(img_df.shape)
+
+#if __name__ == '__main__':
+   # nrows=32008
+ #   df = get_data_locally(nrows=nrows)
+  #  download_images_locally(df)
+    #create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
+    #flat_images_db_upload(size=nrows, rm=True)
+    #img_df = flat_images_db_download(size=nrows, source='gcp')
+    #print(img_df.shape)
