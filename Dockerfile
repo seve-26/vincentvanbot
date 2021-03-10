@@ -6,6 +6,7 @@ COPY api /api
 COPY vincentvanbot/params.py /vincentvanbot/params.py
 COPY vincentvanbot/utils.py /vincentvanbot/utils.py
 COPY vincentvanbot/preprocessing.py /vincentvanbot/preprocessing.py
+COPY vincentvanbot/labels.py /vincentvanbot/labels.py
 
 ENV GOOGLE_APPLICATION_CREDENTIALS='api/Vincent Van Bot-67b2b35a7d0c.json'
 

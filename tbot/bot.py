@@ -90,7 +90,7 @@ def process_image(message):
         # Sends the downloaded picture to our API server
         request_url = api_dummy_url if os.getenv(str(message.chat.id) + 'DUMMY') else api_url
         files = {"file": (pic.file_path.split('/')[1], downloaded.content, 'image/jpeg')}
-        data = {"nsimilar": message.text}
+        data = {"nsimilar": message.text, "rmfirst": False}
         api_response = requests.post(request_url, files=files, data=data).json()
         
         if api_response:
