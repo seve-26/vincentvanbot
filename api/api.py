@@ -7,7 +7,7 @@ from os.path import join, dirname
 import joblib
 import pandas as pd
 from google.cloud import storage
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.dummy import dummy_model
@@ -70,9 +70,10 @@ def index():
 
 # Receives the file from the frontend or Telegram bot
 @app.post("/uploadfile/")
-def create_upload_file(file: UploadFile = File(...)):
+def create_upload_file(file: UploadFile = File(...), nsimilar: int = Form(...)):
     try:
-        response_to_user = dummy_model(database, file.file) if model_type == 'dummy' else process_user_file(file.file)
+        response_to_user = dummy_model(database, file.file, n_similar=nsimilar) \
+            if model_type == 'dummy' else process_user_file(file.file, n_similar=nsimilar)
     except BaseException as e:
         print(e)
         response_to_user = []
