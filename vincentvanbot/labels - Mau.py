@@ -2,8 +2,11 @@ import os
 from os.path import join
 import io
 from google.cloud import vision, storage
-from vincentvanbot.params import IMAGES_PATH, LABELS_SELECTION, BUCKET_NAME
+from vincentvanbot.params import IMAGES_PATH, LABELS_SELECTION, BUCKET_NAME, BUCKET_INITIAL_DATASET_FOLDER
+from vincentvanbot.frompicture.predict_mau import get_closest_images_indexes, get_info_from_index
 from tqdm import tqdm
+import pandas as pd
+import cloudstorage as gcs
 
 tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
 
@@ -75,7 +78,6 @@ def get_labels_from_local_path(path, max_results, proba_threshold=0.6, manual=Tr
                     labels_dict[label.description] = label.score
             else:
                 labels_dict[label.description] = label.score
-    
     return labels_dict
 
 def get_labels_row(row, max_results, proba_threshold, manual, source):
@@ -134,21 +136,67 @@ def labels_df_upload(labels_df, rm=True):
 
     if rm:
         os.remove(labels_df_name)
+        
+        
 
+def filter_KNN_results(user_img, path2, source='local'):
+    
+    '''Filter the KNN Results list by matching columsn from the labeled y'''
+    #IMPORT to be discussed -> seperate function for this? get it from google cloud? 
+    local_labels_db_name = 'labels/labels.pkl'
+        
+    if source == 'local': 
+        path = os.path.join(os.path.dirname(__file__),'.','labels','labels.pkl')
+        labeled_dataframe = pd.read_pickle(path)
+    
+    
+    elif source == 'gcp':
+        client = storage.Client().bucket(BUCKET_NAME)
+        storage_location = f"{BUCKET_INITIAL_DATASET_FOLDER}/{local_labels_db_name}"
+        blob = client.blob(storage_location)
+        blob.download_to_filename(local_labels_db_name)
+        labeled_dataframe = pd.read_pickle(local_labels_db_name)
+         
+    '''filter the labeled csv by the index returnd from the knn'''
+    KNN_index = labeled_dataframe.loc[get_closest_images_indexes(user_img, nsimilar=15, rm=True),:]
+    
+    '''filter out non matching columns'''
+    KNN_index = KNN_index[get_labels_from_local_path(path2, max_results = 50 , proba_threshold=0.5, manual=False).keys()]
+    '''sum eahch row for the resulting dataframe (=KNN Dataframe with only mathcing labels to the input data)'''
+    KNN_index['SUM'] = KNN_index.sum(axis=1)
+    KNN_index = KNN_index.sort_values(by=['SUM'], ascending = False)[:3]
+
+    
+    return  list(KNN_index.index.values)
+    
+    
+    
+    
+    
+    
+    
+    
 
 if __name__ == '__main__':
-    from vincentvanbot.data import get_data_locally
-    df_total = get_data_locally(100)
+    from vincentvanbot.preprocessing import preprocess_image
+    path = os.path.join(os.path.dirname(__file__),'..','notebooks','example-input.jpg')
+    #get_labels_from_local_path(path, max_results = 10 , proba_threshold=0.5, manual=False).keys()
+    user_img = preprocess_image(path,dim=(100,100))
+    print(get_info_from_index(filter_KNN_results(user_img,path)))
     
-    import numpy as np
-    df_list = []
-    for i, df in enumerate(np.array_split(df_total,10)):
-        print(f"\nWorking on slice {i+1}")
-        labels_df = get_labels_df(df,100_000, source='local', manual=False)
-        df_list.append(labels_df)
     
-    import pandas as pd
-    labels_df_total = pd.concat(df_list,axis=0)
-    labels_df_total.fillna(0, inplace= True)
-    # labels_df_upload(labels_df_total)
-    print(labels_df_total.head(5))
+    # from vincentvanbot.data import get_data_locally
+    # df_total = get_data_locally(100)
+    
+    # import numpy as np
+    # df_list = []
+    # for i, df in enumerate(np.array_split(df_total,10)):
+    #     print(f"\nWorking on slice {i+1}")
+    #     labels_df = get_labels_df(df,100_000, source='local', manual=False)
+    #     df_list.append(labels_df)
+    
+    # import pandas as pd
+    # labels_df_total = pd.concat(df_list,axis=0)
+    # labels_df_total.fillna(0, inplace= True)
+    # # labels_df_upload(labels_df_total)
+    # print(labels_df_total.head(5))
