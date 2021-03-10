@@ -112,18 +112,9 @@ def joined_images_db_download(size=32008, source='gcp', rm=True):
 if __name__ == '__main__':
     nrows=32008
     df = get_data_locally(nrows=nrows)
-    download_images_locally(df)
+    #download_images_locally(df)
     img_db = create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(36,42))
     create_joined_img_df(build_pipe_for_categorical, img_db, size=nrows)
     joined_images_db_upload(size=nrows, rm=True)
     joined_img_df = joined_images_db_download(size=nrows, source='gcp')
     print(img_df.shape)
-
-#if __name__ == '__main__':
-   # nrows=32008
- #   df = get_data_locally(nrows=nrows)
-  #  download_images_locally(df)
-    #create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(100,100))
-    #flat_images_db_upload(size=nrows, rm=True)
-    #img_df = flat_images_db_download(size=nrows, source='gcp')
-    #print(img_df.shape)
