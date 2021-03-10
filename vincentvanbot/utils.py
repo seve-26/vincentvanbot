@@ -32,6 +32,10 @@ def load_img(path,target_size=(100,100), interpolation='nearest'):
         raise TypeError('path should be path-like or io.BytesIO'
                         ', not {}'.format(type(path)))
     
+    # if not RGB image, convert it to RGB
+    if img.mode != 'RGB':
+        img = img.convert('RGB')
+
     # resize the image
     if target_size is not None:
         width_height_tuple = (target_size[1], target_size[0])
