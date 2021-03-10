@@ -21,3 +21,4 @@ fsspec
 gcsfs
 joblib
 pillow
+tqdm
