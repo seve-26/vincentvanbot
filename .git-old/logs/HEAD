@@ -1,0 +1,91 @@
+0000000000000000000000000000000000000000 d129d6faa84a9364151cc4ba09ebc4e5ad34c03e Severo Bregante <severo.bregante@gmail.com> 1614598400 +0100	commit (initial): 'initialcommit'
+d129d6faa84a9364151cc4ba09ebc4e5ad34c03e 621c2f6d4f5a2eaffd0ee9e5b0d18496c79ad539 Severo Bregante <severo.bregante@gmail.com> 1614618290 +0100	pull origin master: Fast-forward
+621c2f6d4f5a2eaffd0ee9e5b0d18496c79ad539 7e2ae63bcec795ccb1d4693fc4bd44a2dcfd2267 Severo Bregante <severo.bregante@gmail.com> 1614618464 +0100	commit: rename flowchart file
+7e2ae63bcec795ccb1d4693fc4bd44a2dcfd2267 7e2ae63bcec795ccb1d4693fc4bd44a2dcfd2267 Severo Bregante <severo.bregante@gmail.com> 1614619547 +0100	checkout: moving from master to initial-data-pull
+7e2ae63bcec795ccb1d4693fc4bd44a2dcfd2267 738e5fa40ee6de84ab855d0d2e14ff64caf57af2 Severo Bregante <severo.bregante@gmail.com> 1614620645 +0100	commit: Added notebooks to retrieve data locally and save it in the raw data folder of the package
+738e5fa40ee6de84ab855d0d2e14ff64caf57af2 7e2ae63bcec795ccb1d4693fc4bd44a2dcfd2267 Severo Bregante <severo.bregante@gmail.com> 1614621151 +0100	checkout: moving from initial-data-pull to master
+7e2ae63bcec795ccb1d4693fc4bd44a2dcfd2267 fcbba9384cfb85957676910a2b090fcbd41a081b Severo Bregante <severo.bregante@gmail.com> 1614673547 +0100	pull origin master: Fast-forward
+fcbba9384cfb85957676910a2b090fcbd41a081b fcbba9384cfb85957676910a2b090fcbd41a081b Severo Bregante <severo.bregante@gmail.com> 1614677065 +0100	checkout: moving from master to trying-imgae-resizing-seve
+fcbba9384cfb85957676910a2b090fcbd41a081b 0000000000000000000000000000000000000000 Severo Bregante <severo.bregante@gmail.com> 1614677145 +0100	Branch: renamed refs/heads/trying-imgae-resizing-seve to refs/heads/trying-image-resizing-seve
+0000000000000000000000000000000000000000 fcbba9384cfb85957676910a2b090fcbd41a081b Severo Bregante <severo.bregante@gmail.com> 1614677145 +0100	Branch: renamed refs/heads/trying-imgae-resizing-seve to refs/heads/trying-image-resizing-seve
+fcbba9384cfb85957676910a2b090fcbd41a081b 67878532476bbd04661e13bacbac811cf78d83ac Severo Bregante <severo.bregante@gmail.com> 1614689519 +0100	commit: Got basic transformers for image preprocessing
+67878532476bbd04661e13bacbac811cf78d83ac eee534a5f7f1bc26f0395ad6e1ffe0b72d406eb1 Severo Bregante <severo.bregante@gmail.com> 1614690285 +0100	commit: Create pipeline in notebook
+eee534a5f7f1bc26f0395ad6e1ffe0b72d406eb1 cff11d0bc0bd17175b52f95a1c6c5f1a80b7b1e2 Severo Bregante <severo.bregante@gmail.com> 1614693358 +0100	commit: Created modules for retrieving data locally, initial image preprocessing and pipeline creation
+cff11d0bc0bd17175b52f95a1c6c5f1a80b7b1e2 85046afdf49a280227cb1063016cc4a3c261b295 Severo Bregante <severo.bregante@gmail.com> 1614693778 +0100	commit: Updated requirements.txt
+85046afdf49a280227cb1063016cc4a3c261b295 fcbba9384cfb85957676910a2b090fcbd41a081b Severo Bregante <severo.bregante@gmail.com> 1614694207 +0100	checkout: moving from trying-image-resizing-seve to master
+fcbba9384cfb85957676910a2b090fcbd41a081b fcbba9384cfb85957676910a2b090fcbd41a081b Severo Bregante <severo.bregante@gmail.com> 1614694237 +0100	checkout: moving from master to get-average-shape
+fcbba9384cfb85957676910a2b090fcbd41a081b 85046afdf49a280227cb1063016cc4a3c261b295 Severo Bregante <severo.bregante@gmail.com> 1614694673 +0100	checkout: moving from get-average-shape to trying-image-resizing-seve
+85046afdf49a280227cb1063016cc4a3c261b295 1a8c133773e3827e69178338eb1e1022d899ef26 Severo Bregante <severo.bregante@gmail.com> 1614695139 +0100	commit: Adjusted docstrings of custom transformers
+1a8c133773e3827e69178338eb1e1022d899ef26 fcbba9384cfb85957676910a2b090fcbd41a081b Severo Bregante <severo.bregante@gmail.com> 1614695350 +0100	checkout: moving from trying-image-resizing-seve to master
+fcbba9384cfb85957676910a2b090fcbd41a081b 29ad4412de576ca4c25c1e7b451bce13bc0b8863 Severo Bregante <severo.bregante@gmail.com> 1614695358 +0100	pull origin master: Fast-forward
+29ad4412de576ca4c25c1e7b451bce13bc0b8863 29ad4412de576ca4c25c1e7b451bce13bc0b8863 Severo Bregante <severo.bregante@gmail.com> 1614695415 +0100	checkout: moving from master to improve-image-vectorizing
+29ad4412de576ca4c25c1e7b451bce13bc0b8863 573bca3e8d42d415cc8fc8d05435eaf39acab18c Severo Bregante <severo.bregante@gmail.com> 1614702186 +0100	commit: Created notebook with logic to download images locally
+573bca3e8d42d415cc8fc8d05435eaf39acab18c 573bca3e8d42d415cc8fc8d05435eaf39acab18c Severo Bregante <severo.bregante@gmail.com> 1614702210 +0100	checkout: moving from improve-image-vectorizing to get-only-paintings-data
+573bca3e8d42d415cc8fc8d05435eaf39acab18c 4c92f07c7fdcc4847a63ebc4e39155f50f56c98d Severo Bregante <severo.bregante@gmail.com> 1614702669 +0100	commit: Modified get_data_locally to keep only paintings
+4c92f07c7fdcc4847a63ebc4e39155f50f56c98d 573bca3e8d42d415cc8fc8d05435eaf39acab18c Severo Bregante <severo.bregante@gmail.com> 1614702963 +0100	checkout: moving from get-only-paintings-data to improve-image-vectorizing
+573bca3e8d42d415cc8fc8d05435eaf39acab18c 29ad4412de576ca4c25c1e7b451bce13bc0b8863 Severo Bregante <severo.bregante@gmail.com> 1614703096 +0100	checkout: moving from improve-image-vectorizing to master
+29ad4412de576ca4c25c1e7b451bce13bc0b8863 5159ef82bc25e5a3118a5c2eb615838636382f27 Severo Bregante <severo.bregante@gmail.com> 1614703165 +0100	pull origin master: Fast-forward
+5159ef82bc25e5a3118a5c2eb615838636382f27 5159ef82bc25e5a3118a5c2eb615838636382f27 Severo Bregante <severo.bregante@gmail.com> 1614703204 +0100	checkout: moving from master to improve-image-vectorizing
+5159ef82bc25e5a3118a5c2eb615838636382f27 3aaad36baae1b89596bdbbc6ed8e19422a21134a Severo Bregante <severo.bregante@gmail.com> 1614706068 +0100	commit: Added function to download data locally, and progress bars to downloads and preprocessing
+3aaad36baae1b89596bdbbc6ed8e19422a21134a 6da958cd56f49ee2702e296106a1a5d6f41ad87d Severo Bregante <severo.bregante@gmail.com> 1614714902 +0100	commit: Added to notebook logic to preprocess images
+6da958cd56f49ee2702e296106a1a5d6f41ad87d 7b543b63a9aa4019464e990344542b68c77acb1c Severo Bregante <severo.bregante@gmail.com> 1614771576 +0100	commit: Created files to create pickle with preprocessed images and upload to gcloud
+7b543b63a9aa4019464e990344542b68c77acb1c 22fbadb41ea3689ae849fc62cc9d4d74579482ba Severo Bregante <severo.bregante@gmail.com> 1614784145 +0100	commit: Finalized functions to push/pull pickle
+22fbadb41ea3689ae849fc62cc9d4d74579482ba 33da2cd26df31c86c6f12181adf3e7a0cdea9a66 Severo Bregante <severo.bregante@gmail.com> 1614785080 +0100	commit: Modified notebook
+33da2cd26df31c86c6f12181adf3e7a0cdea9a66 3642f38a2b7b13a02a8925b5f90c94236ce3d1ea Severo Bregante <severo.bregante@gmail.com> 1614785434 +0100	commit: Updated requirements.txt
+3642f38a2b7b13a02a8925b5f90c94236ce3d1ea 281211de9e5206132d884d41b3e74c560ebe13a8 Severo Bregante <severo.bregante@gmail.com> 1614807432 +0100	commit: Found average shape
+281211de9e5206132d884d41b3e74c560ebe13a8 a1d34c70f6c4bcc192fe3a0d2068d0950a1f1d0f Severo Bregante <severo.bregante@gmail.com> 1614850839 +0100	commit: Error handling when downloading an image
+a1d34c70f6c4bcc192fe3a0d2068d0950a1f1d0f 5159ef82bc25e5a3118a5c2eb615838636382f27 Severo Bregante <severo.bregante@gmail.com> 1614850853 +0100	checkout: moving from improve-image-vectorizing to master
+5159ef82bc25e5a3118a5c2eb615838636382f27 40bbc4b07529a6c2cb736455221d83518df7ec74 Severo Bregante <severo.bregante@gmail.com> 1614850897 +0100	pull origin master: Fast-forward
+40bbc4b07529a6c2cb736455221d83518df7ec74 40bbc4b07529a6c2cb736455221d83518df7ec74 Severo Bregante <severo.bregante@gmail.com> 1614850943 +0100	checkout: moving from master to entire-workflow
+40bbc4b07529a6c2cb736455221d83518df7ec74 84ff3d56d9551d41136707cae6ff172c44d433d5 Severo Bregante <severo.bregante@gmail.com> 1614864280 +0100	commit: Refactored preprocessing code and created logic for entire workflow in notebook
+84ff3d56d9551d41136707cae6ff172c44d433d5 f878d7dc993d3839fccf80ee1d7478e1257c8461 Severo Bregante <severo.bregante@gmail.com> 1614865855 +0100	commit: Working on entire workflow
+f878d7dc993d3839fccf80ee1d7478e1257c8461 40bbc4b07529a6c2cb736455221d83518df7ec74 Severo Bregante <severo.bregante@gmail.com> 1614865870 +0100	checkout: moving from entire-workflow to master
+40bbc4b07529a6c2cb736455221d83518df7ec74 021348f5ff2b28a22acd3251464c2ce671cc0ff3 Severo Bregante <severo.bregante@gmail.com> 1614865880 +0100	pull origin master: Fast-forward
+021348f5ff2b28a22acd3251464c2ce671cc0ff3 f878d7dc993d3839fccf80ee1d7478e1257c8461 Severo Bregante <severo.bregante@gmail.com> 1614866086 +0100	checkout: moving from master to entire-workflow
+f878d7dc993d3839fccf80ee1d7478e1257c8461 4cd940a96596ac72745b6277dc955d7bb8aa2b27 Severo Bregante <severo.bregante@gmail.com> 1614866127 +0100	commit (merge): Added back setup.py
+4cd940a96596ac72745b6277dc955d7bb8aa2b27 fda62ada27e7c59338ad2e396a17d2e997f2a784 Severo Bregante <severo.bregante@gmail.com> 1614881692 +0100	commit: Created notebook with code for entire workflow + cleaned up some other pieces
+fda62ada27e7c59338ad2e396a17d2e997f2a784 65d5e384cc98eab113d36a75dfe43ccc2311721f Severo Bregante <severo.bregante@gmail.com> 1614882075 +0100	commit: Removing outdated files re. preprocessing pipeline
+65d5e384cc98eab113d36a75dfe43ccc2311721f fa13f0acc22cd966c7e67ca26befdaa21034fd33 Severo Bregante <severo.bregante@gmail.com> 1614882908 +0100	commit: Adding code to the package
+fa13f0acc22cd966c7e67ca26befdaa21034fd33 bc146f426cc15e3fc42cca19c5870b8cbf685c27 Severo Bregante <severo.bregante@gmail.com> 1614885906 +0100	commit: Changed everything to joblib, preparing to train on bigger dataset
+bc146f426cc15e3fc42cca19c5870b8cbf685c27 4056b783d7d1b11785c311b2bd0ec27a2980b695 Severo Bregante <severo.bregante@gmail.com> 1614888999 +0100	commit: Trying with 10000 images
+4056b783d7d1b11785c311b2bd0ec27a2980b695 4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f Severo Bregante <severo.bregante@gmail.com> 1614935975 +0100	commit: Workflow to train big model
+4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f a1d34c70f6c4bcc192fe3a0d2068d0950a1f1d0f Severo Bregante <severo.bregante@gmail.com> 1614935998 +0100	checkout: moving from entire-workflow to improve-image-vectorizing
+a1d34c70f6c4bcc192fe3a0d2068d0950a1f1d0f 4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f Severo Bregante <severo.bregante@gmail.com> 1614936011 +0100	checkout: moving from improve-image-vectorizing to entire-workflow
+4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f 021348f5ff2b28a22acd3251464c2ce671cc0ff3 Severo Bregante <severo.bregante@gmail.com> 1614936360 +0100	checkout: moving from entire-workflow to master
+021348f5ff2b28a22acd3251464c2ce671cc0ff3 021348f5ff2b28a22acd3251464c2ce671cc0ff3 Severo Bregante <severo.bregante@gmail.com> 1614936374 +0100	checkout: moving from master to recommender-ensemble
+021348f5ff2b28a22acd3251464c2ce671cc0ff3 4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f Severo Bregante <severo.bregante@gmail.com> 1614936807 +0100	merge entire-workflow: Fast-forward
+4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f 021348f5ff2b28a22acd3251464c2ce671cc0ff3 Severo Bregante <severo.bregante@gmail.com> 1614939530 +0100	checkout: moving from recommender-ensemble to master
+021348f5ff2b28a22acd3251464c2ce671cc0ff3 545d64a559f7ad8543f33bf4339f532c4f0566a2 Severo Bregante <severo.bregante@gmail.com> 1614939545 +0100	pull origin master: Fast-forward
+545d64a559f7ad8543f33bf4339f532c4f0566a2 4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f Severo Bregante <severo.bregante@gmail.com> 1614939556 +0100	checkout: moving from master to recommender-ensemble
+4005cc3f8bfe1bbf318c63df6fc1e3efc91a943f 545d64a559f7ad8543f33bf4339f532c4f0566a2 Severo Bregante <severo.bregante@gmail.com> 1614939559 +0100	merge master: Fast-forward
+545d64a559f7ad8543f33bf4339f532c4f0566a2 d670208d1e0240b39e1244e047de08a9ee0c0532 Severo Bregante <severo.bregante@gmail.com> 1614939666 +0100	commit: Added main notebook
+                                                                                                                                                                        1e6b62c10463987ba13363e0f506aa08ff6588bd 545d64a559f7ad8543f33bf4339f532c4f0566a2 Severo Bregante <severo.bregante@gmail.com> 1615021423 +0100
+545d64a559f7ad8543f33bf4339f532c4f0566a2 545d64a559f7ad8543f33bf4339f532c4f0566a2 Severo Bregante <severo.bregante@gmail.com> 1615021549 +0100	checkout: moving from recommender-ensemble to master
+545d64a559f7ad8543f33bf4339f532c4f0566a2 545d64a559f7ad8543f33bf4339f532c4f0566a2 Severo Bregante <severo.bregante@gmail.com> 1615021599 +0100	checkout: moving from master to refactoring
+545d64a559f7ad8543f33bf4339f532c4f0566a2 b6a7f0aec25e42779ead0e2192e9f5fea3e0e9c4 Severo Bregante <severo.bregante@gmail.com> 1615021945 +0100	commit: Rename mau's noteboooks
+b6a7f0aec25e42779ead0e2192e9f5fea3e0e9c4 545d64a559f7ad8543f33bf4339f532c4f0566a2 Severo Bregante <severo.bregante@gmail.com> 1615021949 +0100	checkout: moving from refactoring to master
+545d64a559f7ad8543f33bf4339f532c4f0566a2 7fcb9824de4af4e19ab133b06b668fb10e93fc0e Severo Bregante <severo.bregante@gmail.com> 1615021959 +0100	pull origin master: Fast-forward
+7fcb9824de4af4e19ab133b06b668fb10e93fc0e 7fcb9824de4af4e19ab133b06b668fb10e93fc0e Severo Bregante <severo.bregante@gmail.com> 1615022039 +0100	checkout: moving from master to refactoring-code
+7fcb9824de4af4e19ab133b06b668fb10e93fc0e a2490dcbd697b8140d398c9146e4145f14c06403 Severo Bregante <severo.bregante@gmail.com> 1615022269 +0100	commit: Added notebooks worked on Friday Seve
+a2490dcbd697b8140d398c9146e4145f14c06403 7e8a77e432a687b87ebf9aea1862af72eb1086ff Severo Bregante <severo.bregante@gmail.com> 1615023468 +0100	commit: Merged model.py with model-seve.py. Changed preprocessing/utils.py to avoid importing tensorflow, open-cv and matplotlib
+7e8a77e432a687b87ebf9aea1862af72eb1086ff 6361c90e0fbc61557d58da5c3eb5526d4dfe6c42 Severo Bregante <severo.bregante@gmail.com> 1615024496 +0100	commit: Refactored code for preprocessing pipeline of recommender system
+6361c90e0fbc61557d58da5c3eb5526d4dfe6c42 d9691bcbaa863bfa857ad69568f0fb9bb36c026f Severo Bregante <severo.bregante@gmail.com> 1615025006 +0100	commit: Removing useless files from labeling folders
+d9691bcbaa863bfa857ad69568f0fb9bb36c026f 503e83919b35888a0bb4b6b442a99e6a95110ce7 Severo Bregante <severo.bregante@gmail.com> 1615025135 +0100	commit: Removing API_Template.py as already present in the main folder
+503e83919b35888a0bb4b6b442a99e6a95110ce7 ddacd4a3228431cd598d286bfc5829a0150b7087 Severo Bregante <severo.bregante@gmail.com> 1615025237 +0100	commit: Removing catalog.csv file from notebooks folder. It should be saved under raw_data, to be git_ignored
+ddacd4a3228431cd598d286bfc5829a0150b7087 c766956e4b3ad6ba7d63ff720c0fe0ade3168b6a Severo Bregante <severo.bregante@gmail.com> 1615121142 +0100	commit: Working on labels files. Refactored and renamed first two.
+c766956e4b3ad6ba7d63ff720c0fe0ade3168b6a fb9bb3429a772382bc3bff9170173ee0dcc7d620 Severo Bregante <severo.bregante@gmail.com> 1615126540 +0100	commit: Refactored function to create labels df. Added option to feed the Vision API an image file uploaded from locally (probably faster than using the URL)
+fb9bb3429a772382bc3bff9170173ee0dcc7d620 48295103a342d1fdc1f1a8943f03488b15d6cae5 Severo Bregante <severo.bregante@gmail.com> 1615127766 +0100	commit: Moved labels code to labels.py. Added some labels functions to utils.
+48295103a342d1fdc1f1a8943f03488b15d6cae5 1f1a681811d47578092b7be7300a87e65a203a34 Severo Bregante <severo.bregante@gmail.com> 1615136442 +0100	commit: Re-organized package using simpler structure
+1f1a681811d47578092b7be7300a87e65a203a34 ed101cfd5c06893b93369e19aa7e46b30f518430 Severo Bregante <severo.bregante@gmail.com> 1615138498 +0100	commit: Added checks for each file to make sure all the refactoring didn't mess anything up
+ed101cfd5c06893b93369e19aa7e46b30f518430 502bfa684cfa7d9bf6a443e2340e006a18ab8d22 Severo Bregante <severo.bregante@gmail.com> 1615140666 +0100	commit: Added function to upload labels df to google cloud
+502bfa684cfa7d9bf6a443e2340e006a18ab8d22 217255311e39961b772be14d1b41f262c0d9e85d Severo Bregante <severo.bregante@gmail.com> 1615140808 +0100	commit: Small change
+217255311e39961b772be14d1b41f262c0d9e85d e6e82291868873bfdf5c5e1e97d44a950db50ae4 Severo Bregante <severo.bregante@gmail.com> 1615144559 +0100	commit: Handling errors for file not found in directory
+e6e82291868873bfdf5c5e1e97d44a950db50ae4 ef5f006387d13709dae8804a36849e351b010980 Severo Bregante <severo.bregante@gmail.com> 1615149985 +0100	commit: Changed code to work on slices of 3000 images to be labeled each time
+ef5f006387d13709dae8804a36849e351b010980 08cff2d85a30fd8f4c20cafe151b016cab43bbc9 Severo Bregante <severo.bregante@gmail.com> 1615190657 +0100	commit: Minor changes to extract labels
+08cff2d85a30fd8f4c20cafe151b016cab43bbc9 7fcb9824de4af4e19ab133b06b668fb10e93fc0e Severo Bregante <severo.bregante@gmail.com> 1615190670 +0100	checkout: moving from refactoring-code to master
+7fcb9824de4af4e19ab133b06b668fb10e93fc0e 2a80295e45f4da7c7e27773e5810ef4e0cafb925 Severo Bregante <severo.bregante@gmail.com> 1615190681 +0100	pull origin master: Fast-forward
+2a80295e45f4da7c7e27773e5810ef4e0cafb925 08cff2d85a30fd8f4c20cafe151b016cab43bbc9 Severo Bregante <severo.bregante@gmail.com> 1615190691 +0100	checkout: moving from master to refactoring-code
+08cff2d85a30fd8f4c20cafe151b016cab43bbc9 2a80295e45f4da7c7e27773e5810ef4e0cafb925 Severo Bregante <severo.bregante@gmail.com> 1615190758 +0100	checkout: moving from refactoring-code to master
+2a80295e45f4da7c7e27773e5810ef4e0cafb925 2a80295e45f4da7c7e27773e5810ef4e0cafb925 Severo Bregante <severo.bregante@gmail.com> 1615190874 +0100	checkout: moving from master to run-big-guys
+2a80295e45f4da7c7e27773e5810ef4e0cafb925 3f5635d726809b41a817d12640c4499c21976178 Severo Bregante <severo.bregante@gmail.com> 1615222176 +0100	commit: First day attempt to run the big guys
+                                                                                                                                                                                                             
