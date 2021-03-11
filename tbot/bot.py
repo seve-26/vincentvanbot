@@ -82,7 +82,7 @@ def reply_text(message):
                 # Renders found matches in a keyboard
                 markup = types.ReplyKeyboardMarkup(row_width=1)
                 markup.add(*list(suggestion_list.drop_duplicates().sort_values().values[:50]))
-                bot.send_message(message.chat.id, "These are pictures I cound find for your request. Choose your ❤️🖼️", reply_markup=markup)
+                bot.send_message(message.chat.id, "These are pictures I could find for your request. Choose your ❤️🖼️", reply_markup=markup)
                 os.environ[str(message.chat.id) + 'painting_recomm'] = '1'
                 
             else:
