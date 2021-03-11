@@ -40,18 +40,13 @@ UNSUPPORTED_TYPES = ['audio', 'document', 'sticker', 'video', 'video_note', \
         'new_chat_photo', 'delete_chat_photo', 'group_chat_created', 'supergroup_chat_created', \
             'channel_chat_created', 'migrate_to_chat_id', 'migrate_from_chat_id', 'pinned_message']
 
-user_pic_id = ''
-painting_recomm = False
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    global user_pic_id
-    global painting_recomm
-    
     bot.send_message(message.chat.id, "Hello! Send me a 📷 or enter your favorite painting's name")
     os.environ[str(message.chat.id) + 'DUMMY'] = ''
-    user_pic_id = ''
-    painting_recomm = False
+    os.environ[str(message.chat.id) + 'user_pic_id'] = ''
+    os.environ[str(message.chat.id) + 'painting_recomm'] = ''
 
 @bot.message_handler(commands=['dummy'])
 def switch_to_dummy(message):
@@ -77,13 +72,9 @@ def default_reply(message):
     bot.send_message(message.chat.id, 'I understand only 📷 or 📝')
  
 @bot.message_handler(content_types=['text'])
-def reply_text(message):
-    
-    global user_pic_id
-    global painting_recomm
-        
-    if not user_pic_id:
-        if not painting_recomm:
+def reply_text(message):        
+    if not os.getenv(str(message.chat.id) + 'user_pic_id'):
+        if not os.getenv(str(message.chat.id) + 'painting_recomm'):
             # Looks for the entered pattern in our catalogue
             suggestion_list = db.loc[db['TITLE_lowercase'].str.contains(message.text.lower()), 'Title_author_date']
             
@@ -92,7 +83,7 @@ def reply_text(message):
                 markup = types.ReplyKeyboardMarkup(row_width=1)
                 markup.add(*list(suggestion_list.drop_duplicates().sort_values().values[:50]))
                 bot.send_message(message.chat.id, "These are pictures I cound find for your request. Choose your ❤️🖼️", reply_markup=markup)
-                painting_recomm = True
+                os.environ[str(message.chat.id) + 'painting_recomm'] = '1'
                 
             else:
                 bot.send_message(message.chat.id, "I was not able to find paintings with such a name pattern 😭")
@@ -112,18 +103,14 @@ def reply_text(message):
 
 @bot.message_handler(content_types=['photo'])
 def handle_message_with_photo(message):
-    global user_pic_id
-    user_pic_id = message.photo[1].file_id
+    os.environ[str(message.chat.id) + 'user_pic_id'] = message.photo[1].file_id
     markup = types.ReplyKeyboardMarkup(row_width=3)
     markup.add(*[types.KeyboardButton(str(i)) for i in range(1, 10)])
     bot.send_message(message.chat.id, "Now please tell me how many similar paintings you'd like to find 🔢", reply_markup=markup)
 
 
 def process_fav_painting(message):
-    
-    global user_pic_id
-    global painting_recomm
-        
+           
     try:
         db_result = db.loc[db['Title_author_date'] == message.text, 'URL']
         if not db_result.empty:
@@ -133,9 +120,8 @@ def process_fav_painting(message):
             while (len(user_painting) > 10000000):
                 user_painting = resize_pic(user_painting)
             
-            bot.send_message(message.chat.id, "So this is your 😍 painting:")
-            msg = bot.send_photo(message.chat.id, user_painting)
-            user_pic_id = msg.photo[1].file_id
+            msg = bot.send_photo(message.chat.id, user_painting, caption="So this is your 😍 painting:\n\n" + message.text)
+            os.environ[str(message.chat.id) + 'user_pic_id'] = msg.photo[1].file_id
             
             markup = types.ReplyKeyboardMarkup(row_width=3)
             markup.add(*[types.KeyboardButton(str(i)) for i in range(1, 10)])
@@ -143,7 +129,7 @@ def process_fav_painting(message):
         else:
             bot.send_message(message.chat.id, 'Oops! Something crashed in the middle 🚑🤖... ')
             bot.send_message(message.chat.id, "I was not able to find a painting with such a description 😭")
-            painting_recomm = False
+            os.environ[str(message.chat.id) + 'painting_recomm'] = ''
             
     
     except BaseException as e:
@@ -154,23 +140,20 @@ def process_fav_painting(message):
 
 def process_image(message):
     
-    global user_pic_id
-    global painting_recomm
-    
     try:
         # Prepares a photo on the Telegram API server and downloads it from there
-        pic = bot.get_file(user_pic_id)
+        pic = bot.get_file(os.getenv(str(message.chat.id) + 'user_pic_id'))
         download_url = telegram_download_link + pic.file_path  
         downloaded = requests.get(download_url)
     
         # Sends the downloaded picture to our API server
         request_url = api_dummy_url if os.getenv(str(message.chat.id) + 'DUMMY') else api_url
         files = {"file": (pic.file_path.split('/')[1], downloaded.content, 'image/jpeg')}
-        data = {"nsimilar": message.text, "rmfirst": painting_recomm}
+        data = {"nsimilar": message.text, "rmfirst": os.getenv(str(message.chat.id) + 'painting_recomm') == '1'}
         
         # Resetting the bot to the waiting mode
-        user_pic_id = ''
-        painting_recomm = False
+        os.environ[str(message.chat.id) + 'user_pic_id'] = ''
+        os.environ[str(message.chat.id) + 'painting_recomm'] = ''
         
         api_response = requests.post(request_url, files=files, data=data).json()
         
