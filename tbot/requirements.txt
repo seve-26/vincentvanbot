@@ -3,8 +3,9 @@ setuptools>=26
 twine
 wheel>=0.29
 
-python-multipart
 python-dotenv
 requests
 pillow
 pyTelegramBotAPI
+pandas
+google-cloud-storage
