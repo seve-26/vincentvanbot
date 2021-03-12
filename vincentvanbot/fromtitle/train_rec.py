@@ -5,7 +5,7 @@ from google.cloud import storage
 from vincentvanbot.params import BUCKET_NAME
 
 
-def train_model(joined_images_df): # from data/create_joined_img_df
+def train_model(joined_images_df):
     """Takes preprocessed train data (pixel and enconded features) as df.
     Returns fitted KNN model and train data image indexes (used then to refer
     back to initial database).Saves locally model and indexes."""
@@ -30,7 +30,8 @@ def save_model_to_cloud(rm=False):
 
 
 if __name__=='__main__':
+    nrows=1000
     from vincentvanbot.fromtitle.data_rec import joined_images_db_download
-    train_df = joined_images_db_download(size=32008, source='gcp', rm=True)
+    train_df = joined_images_db_download(size=nrows, source='gcp', rm=False)
     train_model(train_df)
     save_model_to_cloud(rm=True)

@@ -6,9 +6,8 @@ from google.cloud import storage
 import pandas as pd
 from vincentvanbot.params import BUCKET_NAME, BUCKET_INITIAL_DATASET_FOLDER, IMAGES_PATH
 from vincentvanbot.utils import get_jpg_link, download_single_image
-from vincentvanbot.fromtitle.data_rec import create_joined_img_df, get_data_locally
+from vincentvanbot.fromtitle.data_rec import create_joined_img_df, get_data_locally, create_flat_images_db
 from vincentvanbot.preprocessing import build_pipe_for_categorical
-from vincentvanbot.fromtitle.data_rec import create_flat_images_db
 
 
 
@@ -76,10 +75,11 @@ def get_info_from_index(indexes, all_info=False):
 
 
 if __name__=='__main__':
+    nrows=100_000
     user_input = "Allegory; AACHEN, Hans von; 1598"
     user_idx = get_index_of_user_input(user_input, get_data_locally, case=False)
-    img_db = create_flat_images_db(size=100, path=IMAGES_PATH, dim=(100,100))
-    user_input_transformed = create_joined_img_df(build_pipe_for_categorical, img_db, size=100).iloc[[user_idx]]
+    #img_db = create_flat_images_db(size=100_000, path=IMAGES_PATH, dim=(36,42))
+    user_input_transformed = create_joined_img_df(size=nrows).iloc[[user_idx]]
     indexes = get_closest_images_indexes(user_input_transformed)
     urls = get_info_from_index(indexes)
     print(urls)

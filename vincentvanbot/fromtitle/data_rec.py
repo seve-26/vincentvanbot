@@ -24,7 +24,6 @@ def get_data_locally(nrows=10):
 
 
 
-
 def download_images_locally(df):
     """Saves jpg files under raw_data/images based on paintings in df"""
     tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
@@ -49,10 +48,14 @@ def create_flat_images_db(size=100, path=IMAGES_PATH, dim=(36,42)):
     return img_db
 
 
-def create_joined_img_df(build_pipe_for_categorical, img_db, size=32008):
+def create_joined_img_df(size=100_000):
+    img_db = create_flat_images_db(size=size, path=IMAGES_PATH, dim=(36,42))
     img_db.index = [int(i) for i in img_db.index] # transform index from str to int
+    df = get_data_locally(nrows=100_000)
     pipe = build_pipe_for_categorical()
-    array_transformed = pd.DataFrame(pipe.fit_transform(get_data_locally(nrows=size)))
+    array_transformed = pipe.fit_transform(df)
+    column_name = pipe.get_feature_names()
+    array_transformed = pd.DataFrame(array_transformed, columns=column_name, index=df.index)
     join_images_db = pd.DataFrame(img_db.join(array_transformed, lsuffix='_left', rsuffix='_right'))
 
     # save df to joblib file
@@ -112,11 +115,11 @@ def joined_images_db_download(size=32008, source='gcp', rm=True):
 
 
 if __name__ == '__main__':
-    nrows=100
-    #df = get_data_locally(nrows=nrows)
+    nrows=1000
+    df = get_data_locally(nrows=nrows)
     #download_images_locally(df)
-    img_db = create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(36,42))
-    #create_joined_img_df(build_pipe_for_categorical, img_db, size=nrows)
-    #joined_images_db_upload(size=nrows, rm=True)
+    #img_db = create_flat_images_db(size=nrows, path=IMAGES_PATH, dim=(36,42))
+    create_joined_img_df(size=nrows)
+    joined_images_db_upload(size=nrows, rm=True)
     joined_img_df = joined_images_db_download(size=nrows, source='gcp')
-    print(img_db.shape)
+    print(joined_img_df.shape)
