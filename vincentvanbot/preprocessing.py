@@ -7,7 +7,7 @@ from vincentvanbot.utils import load_img, img_to_array
 
 def build_pipe_for_categorical():
     """Builds preprocessing pipeline for categorical variables of the initial database"""
-    cols_to_encode = ["TYPE", "SCHOOL"]
+    cols_to_encode = ["TYPE", "SCHOOL", "TIMEFRAME"]
     encoder = OneHotEncoder(sparse = False)
 
     preproc_pipe = ColumnTransformer([
@@ -28,7 +28,7 @@ def preprocess_image(img, dim=(100,100)):
 
 if __name__ == '__main__':
     from vincentvanbot.data import get_data_locally
-    df = get_data_locally(nrows=100_000)
+    df = get_data_locally(nrows=100)
     pipe = build_pipe_for_categorical()
     array_transformed = pipe.fit_transform(df)
     print("Shape of transformed df - categorical",array_transformed.shape)
