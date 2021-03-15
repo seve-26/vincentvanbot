@@ -30,8 +30,8 @@ def save_model_to_cloud(rm=False):
 
 
 if __name__=='__main__':
-    nrows=1000
+    nrows=100_000
     from vincentvanbot.fromtitle.data_rec import joined_images_db_download
-    train_df = joined_images_db_download(size=nrows, source='gcp', rm=False)
+    train_df = joined_images_db_download(size=nrows, source='local', rm=False)
     train_model(train_df)
     save_model_to_cloud(rm=True)

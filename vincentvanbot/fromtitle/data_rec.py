@@ -51,19 +51,20 @@ def create_flat_images_db(size=100, path=IMAGES_PATH, dim=(36,42)):
 def create_joined_img_df(size=100_000):
     img_db = create_flat_images_db(size=size, path=IMAGES_PATH, dim=(36,42))
     img_db.index = [int(i) for i in img_db.index] # transform index from str to int
+
     df = get_data_locally(nrows=100_000)
     pipe = build_pipe_for_categorical()
     array_transformed = pipe.fit_transform(df)
     column_name = pipe.get_feature_names()
-    array_transformed = pd.DataFrame(array_transformed, columns=column_name, index=df.index)
-    join_images_db = pd.DataFrame(img_db.join(array_transformed, lsuffix='_left', rsuffix='_right'))
+    df_transformed = pd.DataFrame(array_transformed, columns=column_name, index=df.index)
+    join_images_db = pd.DataFrame(img_db.join(df_transformed, lsuffix='_left', rsuffix='_right'))
 
     # save df to joblib file
     join_images_db.sort_index(inplace=True)
     if size:
-       joblib.dump(join_images_db,JOIN_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib')
+        joblib.dump(join_images_db,JOIN_IMAGES_DB_PATH_ROOT+'_'+str(size)+'.joblib')
     else:
-       joblib.dump(join_images_db,JOIN_IMAGES_DB_PATH_ROOT+'.joblib')
+        joblib.dump(join_images_db,JOIN_IMAGES_DB_PATH_ROOT+'.joblib')
 
     return join_images_db
 
