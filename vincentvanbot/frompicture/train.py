@@ -1,3 +1,6 @@
+"""This file is used to train KNN model based on paintings from database, and to upload
+the fitted model to Google Cloud."""
+
 import os
 from sklearn.neighbors import NearestNeighbors
 import joblib

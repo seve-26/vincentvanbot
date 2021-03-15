@@ -8,46 +8,6 @@ from google.cloud import storage
 from tqdm import tqdm
 
 
-def get_data_locally(nrows=10):
-    """Return df with initial database and jpg image"""
-    path = os.path.join(os.path.dirname(__file__),'..', '..','raw_data','catalog.csv')
-    # encode to take care of non-ASCII characters such as 'ö'
-    df = pd.read_csv(path, encoding= 'unicode_escape')
-
-    # transform html link to jpg
-    df['URL'] = df['URL'].map(get_jpg_link)
-
-    # keep only paintings
-    df = df[df['FORM'] == 'painting'].head(nrows)
-
-    return df
-
-
-
-def download_images_locally(df):
-    """Saves jpg files under raw_data/images based on paintings in df"""
-    tqdm.pandas(bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}')
-
-    if not os.path.exists(IMAGES_PATH):
-        os.mkdir(IMAGES_PATH)
-    print(f'\nDownloading images to {IMAGES_PATH}...')
-    df = df.progress_apply(download_single_image,axis=1)
-
-
-
-def create_flat_images_db(size=100, path=IMAGES_PATH, dim=(36,42)):
-    """For each image in path, resizes it to the given dim, transforms it into a flat vector
-    and stores in a df. Then dumps it into a joblib file"""
-
-    # stores flat images in a dataframe
-    img_db = pd.DataFrame()
-    for filename in tqdm(os.listdir(IMAGES_PATH)[:size], bar_format='{l_bar}{bar:30}{r_bar}{bar:-10b}'):
-        img = preprocess_image(os.path.join(IMAGES_PATH, filename),dim=dim)
-        img_db = img_db.append(pd.DataFrame(img,index=[filename.strip('.jpg')]))
-
-    return img_db
-
-
 def create_joined_img_df(size=100_000):
     img_db = create_flat_images_db(size=size, path=IMAGES_PATH, dim=(36,42))
     img_db.index = [int(i) for i in img_db.index] # transform index from str to int
