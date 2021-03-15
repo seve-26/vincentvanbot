@@ -13,5 +13,4 @@ setup(name='vincentvanbot',
       test_suite='tests',
       # include_package_data: to install data from MANIFEST.in
       include_package_data=True,
-      scripts=['scripts/vincentvanbot-run'],
       zip_safe=False)
