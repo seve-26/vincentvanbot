@@ -1,3 +1,6 @@
+### WORK IN PROGRESS! Currently not used by the api
+""""""
+
 import os
 from sklearn.neighbors import NearestNeighbors
 import joblib

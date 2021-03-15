@@ -1,11 +1,14 @@
+### WORK IN PROGRESS! Currently not used by the api
+"""This file is used to create and upload to GCP a dataframe used to find similarity
+between paintings. It is composed of columns from the vector respresentation of the image,
+joined with other information present in our database (i.e. TYPE, SCHOOL, TIMEFRAME)"""
+
 import os
 import pandas as pd
 import joblib
-from vincentvanbot.params import IMAGES_PATH, FLAT_IMAGES_DB_PATH_ROOT, BUCKET_NAME, BUCKET_JOIN_IMAGES_DB_FOLDER, JOIN_IMAGES_DB_PATH_ROOT
-from vincentvanbot.utils import download_single_image, get_jpg_link
-from vincentvanbot.preprocessing import preprocess_image, build_pipe_for_categorical
+from vincentvanbot.params import IMAGES_PATH, BUCKET_NAME, BUCKET_JOIN_IMAGES_DB_FOLDER, JOIN_IMAGES_DB_PATH_ROOT
+from vincentvanbot.preprocessing import build_pipe_for_categorical
 from google.cloud import storage
-from tqdm import tqdm
 
 
 def create_joined_img_df(size=100_000):

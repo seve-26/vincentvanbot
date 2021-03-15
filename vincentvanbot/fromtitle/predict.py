@@ -1,3 +1,4 @@
+### WORK IN PROGRESS! Currently not used by the api
 """This file is used to predict paintings that are closest to the given title of painting."""
 
 import os
