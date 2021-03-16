@@ -1,7 +1,7 @@
 # Vincent Van Bot 🎨
 
 An app that will let you find your new favorite painting.
-Try it on the [**web app**](http://vincentvanbot.com/) or chat with our [**Telegram bot**](https://t.me/vincentvan_bot).
+Try it on the [**web app**](https://vincentvanbot.com/) or chat with our [**Telegram bot**](https://t.me/vincentvan_bot).
 
 ## Features
 - 📸 **Picture to painting**: the user takes a picture of something beautiful he/she sees, and uploads it to Vincent Van Bot. The app returns paintings that look similar to the picture
