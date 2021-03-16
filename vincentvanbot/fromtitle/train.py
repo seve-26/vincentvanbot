@@ -1,3 +1,6 @@
+### WORK IN PROGRESS! Currently not used by the api
+"""This file trains a KNN model based on the output of vincentvanbot.fromtitle.data"""
+
 import os
 from sklearn.neighbors import NearestNeighbors
 import joblib
@@ -8,7 +11,7 @@ from vincentvanbot.params import BUCKET_NAME
 def train_model(joined_images_df):
     """Takes preprocessed train data (pixel and enconded features) as df.
     Returns fitted KNN model and train data image indexes (used then to refer
-    back to initial database).Saves locally model and indexes."""
+    back to initial database). Saves locally model and indexes."""
     knn_model = NearestNeighbors().fit(joined_images_df)
 
     joblib.dump(knn_model,'recommender_model.joblib')

@@ -1,3 +1,5 @@
+"""Defines API embedding the entire logic of the product. Used then by frontend and Telegram bot."""
+
 import os
 import time
 import requests

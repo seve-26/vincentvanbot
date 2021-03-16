@@ -1,3 +1,5 @@
+"""Defines Streamlit web app."""
+
 import io
 import os
 import copy

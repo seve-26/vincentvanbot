@@ -1,3 +1,5 @@
+"""List of hardcoded parameters used in different modules."""
+
 from os.path import abspath, join, dirname
 
 # paths

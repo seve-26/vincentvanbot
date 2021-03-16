@@ -1,3 +1,6 @@
+"""Defines logic of a dummy model, used to develop frontend and Telegram while the actual model
+was still under development."""
+
 import os
 import requests
 from dotenv import load_dotenv
