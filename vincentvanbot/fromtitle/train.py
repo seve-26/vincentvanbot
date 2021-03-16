@@ -1,5 +1,5 @@
 ### WORK IN PROGRESS! Currently not used by the api
-""""""
+"""This file trains a KNN model based on the output of vincentvanbot.fromtitle.data"""
 
 import os
 from sklearn.neighbors import NearestNeighbors

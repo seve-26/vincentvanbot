@@ -1,3 +1,6 @@
+"""This file is used to import initial database and to create dataframe with vector representation
+of each painting image"""
+
 import os
 import pandas as pd
 import joblib

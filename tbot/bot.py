@@ -1,3 +1,5 @@
+"""Define the logic of the Telegram bot"""
+
 import io
 import os
 import time

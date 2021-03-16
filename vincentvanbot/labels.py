@@ -1,3 +1,6 @@
+"""This file is used to get labels from the Google Vision API. It saves to GCP a database with
+labels for paintings of the starting database."""
+
 import os
 from os.path import join
 import io

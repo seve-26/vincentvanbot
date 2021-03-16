@@ -1,3 +1,5 @@
+"""List of auxiliary functions used in other modules."""
+
 import os
 import io
 import requests
