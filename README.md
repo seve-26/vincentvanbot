@@ -1,74 +1,39 @@
-# Data analysis
-- Document here the project: vincentvanbot
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+# Vincent Van Bot 🎨
 
-Please document the project the better you can.
+An app that will let you find your new favorite painting.
+Try it on the [**web app**](http://vincentvanbot.com/) or chat with our [**Telegram bot**](https://t.me/vincentvan_bot).
 
-# Startup the project
+## Features
+- 📸 **Picture to painting**: the user takes a picture of something beautiful he/she sees, and uploads it to Vincent Van Bot. The app returns paintings that look similar to the picture
+- 😍 **Painting recommender**: the user inputs the title of his/her favorite painting. The app returns paintings that looks similar to the selected one
 
-The initial setup.
+## Behind the scenes
+Data source: [Web Gallery of Art](https://www.wga.hu/database/download/index.html)
 
-Create virtualenv and install the project:
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
-```
+#### Techniques and tools:
+- `Pandas` and `Numpy` for data wrangling
+- `Pillow` for image preprocessing
+- Google Vision API for image labeling
+- `NearestNeighbors` (with Minkowski distance) from `scikit-learn` for image similarity
+- `FastAPI` for building API
+- `streamlit` and `uvicorn` to build and run web app
+- `Docker` and Google Compute Engine for hosting API, web app and Telegram bot
+- Google Cloud Platform to manage entire project
 
-Unittest test:
-```bash
-make clean install test
-```
 
-Check for vincentvanbot in gitlab.com/{group}.
-If your project is not set please add it:
+A visualization of the workflow of the two features below (slides showed to non-tech audience). 
 
-- Create a new project on `gitlab.com/{group}/vincentvanbot`
-- Then populate it:
+<img src="https://user-images.githubusercontent.com/74202982/111287200-472d1600-8643-11eb-89fa-5f5d3c71fad2.png" alt="Picture to Painting" width="700"/>
+<img src="https://user-images.githubusercontent.com/74202982/111287324-6461e480-8643-11eb-84df-893c4a7ae103.png" alt="Painting Recommender" width="700"/>
 
-```bash
-##   e.g. if group is "{group}" and project_name is "vincentvanbot"
-git remote add origin git@github.com:{group}/vincentvanbot.git
-git push -u origin master
-git push -u origin --tags
-```
 
-Functionnal test with a script:
+## Contributors
+This is the final project for the completion of [Le Wagon's Data Science bootcamp](https://www.lewagon.com/data-science-course/full-time).
 
-```bash
-cd
-mkdir tmp
-cd tmp
-vincentvanbot-run
-```
+The project has been completed in less than two weeks by a team of 4 classmates:
+- [Severo Bregante](https://github.com/seve-26)
+- [Nikolay Podvorchan](https://github.com/rtnikki)
+- [Julia Schmitt](https://github.com/JulSchmitt)
+- [Mauritz von Lenthe](https://github.com/maulenthe)
 
-# Install
-
-Go to `https://github.com/{group}/vincentvanbot` to see the project, manage issues,
-setup you ssh public key, ...
-
-Create a python3 virtualenv and activate it:
-
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
-```
-
-Clone the project and install it:
-
-```bash
-git clone git@github.com:{group}/vincentvanbot.git
-cd vincentvanbot
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-vincentvanbot-run
-```
+Thanks a lot for your effort team!
